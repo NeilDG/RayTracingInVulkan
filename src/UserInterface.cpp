@@ -18,6 +18,7 @@
 #include "ImGui/imgui_impl_vulkan.h"
 
 #include <array>
+#include "From-GDGRAP2/UIManager.h"
 
 namespace
 {
@@ -81,6 +82,10 @@ UserInterface::UserInterface(
 
 	// No ini file.
 	io.IniFilename = nullptr;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	// io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
 	// Window scaling and style.
 	const auto scaleFactor = window.ContentScale();
@@ -104,6 +109,9 @@ UserInterface::UserInterface(
 	});
 
 	ImGui_ImplVulkan_DestroyFontUploadObjects();
+
+	//initialize additional libs
+	UIManager::initialize();
 }
 
 UserInterface::~UserInterface()
@@ -119,9 +127,10 @@ void UserInterface::Render(VkCommandBuffer commandBuffer, const Vulkan::FrameBuf
 	ImGui_ImplVulkan_NewFrame();
 	ImGui::NewFrame();
 
-	DrawSettings();
-	DrawOverlay(statistics);
+	// DrawSettings();
+	// DrawOverlay(statistics);
 	//ImGui::ShowStyleEditor();
+	UIManager::getInstance()->drawAllUI();
 	ImGui::Render();
 
 	VkRenderPassBeginInfo renderPassInfo = {};

@@ -331,3 +331,4 @@ ASALocalRun/
 
 # Extras
 build
+!build/RayTracingInVulkan.sln

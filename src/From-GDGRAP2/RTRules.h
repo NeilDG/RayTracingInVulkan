@@ -1,5 +1,5 @@
 #pragma once
-#include <opencv2/core/cvstd.hpp>
+#include <string>
 /**
  * \brief Refers to the active ray-tracing rules being used. Production/debug.
  */
@@ -31,7 +31,7 @@ public:
 
 	void setRayTracingType(RayTracingType type);
 	void setPathTracingType(PathTracingType type);
-	cv::String getSaveImagePath();
+	std::string getSaveImagePath();
 	friend class RayTracingProper;
 	friend class RenderLayer;
 
@@ -50,7 +50,7 @@ private:
 	int numCores;
 	int widthWindow;
 	int heightWindow;
-	cv::String saveImagePath;
+	std::string saveImagePath;
 
 	RayTracingType rayTracingType;
 	PathTracingType pathTracingType;

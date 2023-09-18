@@ -66,7 +66,7 @@ void RTRules::setPathTracingType(PathTracingType type)
 	this->pathTracingType = type;
 }
 
-cv::String RTRules::getSaveImagePath()
+std::string RTRules::getSaveImagePath()
 {
 	return this->saveImagePath;
 }

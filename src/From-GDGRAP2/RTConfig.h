@@ -6,6 +6,7 @@ struct ApplicationConfig
 	static constexpr float ASPECT_RATIO = 16.0f / 10.0f;
 	static const int APP_WINDOW_WIDTH = 1920;
 	static constexpr int APP_WINDOW_HEIGHT = static_cast<int>(APP_WINDOW_WIDTH / ASPECT_RATIO);
+	static const inline std::string DEFAULT_UI_LAYOUT_PATH = "X:/GithubProjects/RayTracingInVulkan/src/imgui_default_layout.ini";
 };
 
 struct RTConfig_Debug
@@ -22,7 +23,7 @@ struct RTConfig_Debug
 	static const int WIDTH_WINDOW = static_cast<int>(WIDTH / NUM_CORES);
 	static const int HEIGHT_WINDOW = HEIGHT;
 
-	static const inline std::string SAVE_IMAGE_PATH = "X:/GithubProjects/GDGRAP2-Workspace/Part 8 - The Next Week Chapter/ImageRender.png";
+	static const inline std::string SAVE_IMAGE_PATH = "X:/GithubProjects/RayTracingInVulkan/ImageRender.png";
 };
 
 struct RTConfig_Production
@@ -40,5 +41,5 @@ struct RTConfig_Production
 	static const int WIDTH_WINDOW = static_cast<int>(WIDTH / NUM_CORES);
 	static const int HEIGHT_WINDOW = HEIGHT;
 
-	static const inline std::string SAVE_IMAGE_PATH = "X:/GithubProjects/GDGRAP2-Workspace/Part 8 - The Next Week Chapter/ImageRender.png";
+	static const inline std::string SAVE_IMAGE_PATH = "X:/GithubProjects/RayTracingInVulkan/ImageRender.png";
 };

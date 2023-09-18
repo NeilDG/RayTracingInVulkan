@@ -127,6 +127,32 @@ set(src_files_vulkan_raytracing
 	Vulkan/RayTracing/TopLevelAccelerationStructure.hpp
 )
 
+set(src_files_from_gdgrap2
+	From-GDGRAP2/AUIScreen.cpp
+	From-GDGRAP2/AUIScreen.h
+	From-GDGRAP2/ConsoleScreen.cpp
+	From-GDGRAP2/ConsoleScreen.h
+	From-GDGRAP2/Debug.cpp
+	From-GDGRAP2/Debug.h
+	From-GDGRAP2/HierarchyScreen.cpp
+	From-GDGRAP2/HierarchyScreen.h
+	From-GDGRAP2/IETSemaphore.cpp
+	From-GDGRAP2/IETSemaphore.h
+	From-GDGRAP2/IETThread.cpp
+	From-GDGRAP2/IETThread.h
+	From-GDGRAP2/InspectorScreen.cpp
+	From-GDGRAP2/InspectorScreen.h
+	From-GDGRAP2/MenuScreen.cpp
+	From-GDGRAP2/MenuScreen.h
+	From-GDGRAP2/ProfilerScreen.cpp
+	From-GDGRAP2/ProfilerScreen.h
+	From-GDGRAP2/RTRules.cpp
+	From-GDGRAP2/RTRules.h
+	From-GDGRAP2/UIManager.cpp
+	From-GDGRAP2/UIManager.h
+	From-GDGRAP2/RTConfig.h
+)
+
 set(src_files
 	main.cpp
 	ModelViewController.cpp
@@ -145,6 +171,7 @@ set(src_files
 source_group("Assets" FILES ${src_files_assets})
 source_group("ImGui" FILES ${src_files_imgui})
 source_group("Utilities" FILES ${src_files_utilities})
+source_group("From-GDGRAP2" FILES ${src_files_from_gdgrap2})
 source_group("Vulkan" FILES ${src_files_vulkan})
 source_group("Vulkan.RayTracing" FILES ${src_files_vulkan_raytracing})
 source_group("Main" FILES ${src_files})
@@ -152,7 +179,8 @@ source_group("Main" FILES ${src_files})
 add_executable(${exe_name} 
 	${src_files_assets} 
 	${src_files_imgui} 
-	${src_files_utilities} 
+	${src_files_utilities}
+	${src_files_from_gdgrap2}
 	${src_files_vulkan} 
 	${src_files_vulkan_raytracing} 
 	${src_files}

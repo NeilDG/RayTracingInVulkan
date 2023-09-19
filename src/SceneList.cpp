@@ -5,6 +5,8 @@
 #include <functional>
 #include <random>
 
+#include "From-GDGRAP2/MathUtils.h"
+
 using namespace glm;
 using Assets::Material;
 using Assets::Model;
@@ -60,7 +62,7 @@ namespace
 
 }
 
-const std::vector<std::pair<std::string, std::function<SceneAssets (SceneList::CameraInitialSate&)>>> SceneList::AllScenes =
+const std::vector<std::pair<std::string, std::function<SceneAssets (SceneList::CameraInitialState&)>>> SceneList::AllScenes =
 {
 	{"Cube And Spheres", CubeAndSpheres},
 	{"Ray Tracing In One Weekend", RayTracingInOneWeekend},
@@ -68,9 +70,10 @@ const std::vector<std::pair<std::string, std::function<SceneAssets (SceneList::C
 	{"Lucy In One Weekend", LucyInOneWeekend},
 	{"Cornell Box", CornellBox},
 	{"Cornell Box & Lucy", CornellBoxLucy},
+	{"GDGRAP2 - Sphere World", GDGRAP2_SphereWorld}
 };
 
-SceneAssets SceneList::CubeAndSpheres(CameraInitialSate& camera)
+SceneAssets SceneList::CubeAndSpheres(CameraInitialState& camera)
 {
 	// Basic test scene.
 	
@@ -95,7 +98,7 @@ SceneAssets SceneList::CubeAndSpheres(CameraInitialSate& camera)
 	return std::forward_as_tuple(std::move(models), std::move(textures));
 }
 
-SceneAssets SceneList::RayTracingInOneWeekend(CameraInitialSate& camera)
+SceneAssets SceneList::RayTracingInOneWeekend(CameraInitialState& camera)
 {
 	// Final scene from Ray Tracing In One Weekend book.
 	
@@ -123,7 +126,7 @@ SceneAssets SceneList::RayTracingInOneWeekend(CameraInitialSate& camera)
 	return std::forward_as_tuple(std::move(models), std::vector<Texture>());
 }
 
-SceneAssets SceneList::PlanetsInOneWeekend(CameraInitialSate& camera)
+SceneAssets SceneList::PlanetsInOneWeekend(CameraInitialState& camera)
 {
 	// Same as RayTracingInOneWeekend but using textures.
 	
@@ -156,7 +159,7 @@ SceneAssets SceneList::PlanetsInOneWeekend(CameraInitialSate& camera)
 	return std::forward_as_tuple(std::move(models), std::move(textures));
 }
 
-SceneAssets SceneList::LucyInOneWeekend(CameraInitialSate& camera)
+SceneAssets SceneList::LucyInOneWeekend(CameraInitialState& camera)
 {
 	// Same as RayTracingInOneWeekend but using the Lucy 3D model.
 	
@@ -216,7 +219,7 @@ SceneAssets SceneList::LucyInOneWeekend(CameraInitialSate& camera)
 	return std::forward_as_tuple(std::move(models), std::vector<Texture>());
 }
 
-SceneAssets SceneList::CornellBox(CameraInitialSate& camera)
+SceneAssets SceneList::CornellBox(CameraInitialState& camera)
 {
 	camera.ModelView = lookAt(vec3(278, 278, 800), vec3(278, 278, 0), vec3(0, 1, 0));
 	camera.FieldOfView = 40;
@@ -243,7 +246,7 @@ SceneAssets SceneList::CornellBox(CameraInitialSate& camera)
 	return std::make_tuple(std::move(models), std::vector<Texture>());
 }
 
-SceneAssets SceneList::CornellBoxLucy(CameraInitialSate& camera)
+SceneAssets SceneList::CornellBoxLucy(CameraInitialState& camera)
 {
 	camera.ModelView = lookAt(vec3(278, 278, 800), vec3(278, 278, 0), vec3(0, 1, 0));
 	camera.FieldOfView = 40;
@@ -270,4 +273,78 @@ SceneAssets SceneList::CornellBoxLucy(CameraInitialSate& camera)
 	models.push_back(lucy0);
 
 	return std::forward_as_tuple(std::move(models), std::vector<Texture>());
+}
+
+/**
+ * \brief Replication of the sphere world from GDGRAP2.
+ * \param camera 
+ * \return 
+ */
+SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
+{
+	camera.ModelView = lookAt(vec3(13, 2, 3), vec3(0, 0, 0), vec3(0, 1, 0));
+	camera.FieldOfView = 20;
+	camera.Aperture = 0.01f;
+	camera.FocusDistance = 10.0f;
+	camera.ControlSpeed = 5.0f;
+	camera.GammaCorrection = true;
+	camera.HasSky = true;
+
+	std::mt19937 engine(1);
+	std::function<float()> random = std::bind(std::uniform_real_distribution<float>(), engine);
+
+	bool isProcedural = false;
+	std::vector<Model> models;
+	std::vector<Texture> textures;
+
+	models.push_back(Model::CreateSphere(vec3(0, -1000, 0), 1000, Material::Lambertian(vec3(0.5f, 0.5f, 0.5f)), isProcedural));
+	models.push_back(Model::CreateSphere(vec3(0, 1, 0), 1.0f, Material::Dielectric(1.5f), isProcedural));
+	models.push_back(Model::CreateSphere(vec3(-4, 1, 0), 1.0f, Material::Lambertian(vec3(0.4f, 0.2f, 0.1f)), isProcedural));
+	models.push_back(Model::CreateSphere(vec3(-8, 2.5f, 1), 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural));
+	models.push_back(Model::CreateSphere(vec3(4, 1, 0), 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural));
+
+	textures.push_back(Texture::LoadTexture("../assets/textures/2k_mars.jpg", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/textures/2k_moon.jpg", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/textures/land_ocean_ice_cloud_2048.png", Vulkan::SamplerConfig()));
+
+	for(int repeats = 0; repeats < 2; repeats++)
+	{
+		for (int a = -11; a < 11; a++)
+		{
+			for (int b = -11; b < 11; b++)
+			{
+				float matVal = MathUtils::randomFloat();
+				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
+				if ((center - vec3(4.0, 0.2f, 0.0f)).length() > 0.9f)
+				{
+					Material materialInstance;
+
+					if (matVal < 0.8)
+					{
+						vec3 albedo = 2.0f * MathUtils::randomFloatVec3();
+						float fuzziness = MathUtils::randomFloat(0.0f, 0.95f);
+						materialInstance = Material::Metallic(albedo, fuzziness, MathUtils::randomInt(0, textures.size()));
+					}
+					else if(matVal < 0.95)
+					{
+						materialInstance = Material::Dielectric(MathUtils::randomFloat(0.5f, 2.5f));
+					}
+					else
+					{
+						vec3 albedo = MathUtils::randomFloatVec3();
+						materialInstance = Material::DiffuseLight(albedo);
+					}
+
+					Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.2f, 0.4f), materialInstance, isProcedural);
+					models.push_back(modelInstance);
+				}
+			}
+		}
+	}
+
+	// textures.push_back(Texture::LoadTexture("../assets/textures/2k_mars.jpg", Vulkan::SamplerConfig()));
+	// textures.push_back(Texture::LoadTexture("../assets/textures/2k_moon.jpg", Vulkan::SamplerConfig()));
+	// textures.push_back(Texture::LoadTexture("../assets/textures/land_ocean_ice_cloud_2048.png", Vulkan::SamplerConfig()));
+
+	return std::forward_as_tuple(std::move(models), std::move(textures));
 }

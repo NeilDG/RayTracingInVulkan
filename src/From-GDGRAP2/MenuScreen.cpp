@@ -126,7 +126,7 @@ void MenuScreen::OnLoadSphereWorld()
 	// RayTracingProper::getInstance()->renderSceneFromHierarchy();
 
 	std::shared_ptr<Parameters> parameters = std::make_shared<Parameters>(EventNames::ON_SCENE_LOADED);
-	parameters->encodeInt("SCENE_INDEX", 1);
+	parameters->encodeInt("SCENE_INDEX", 6);
 	EventBroadcaster::getInstance()->broadcastEventWithParams(EventNames::ON_SCENE_LOADED, parameters);
 }
 

@@ -48,7 +48,7 @@ private:
 	uint32_t sceneIndex_{};
 	UserSettings userSettings_{};
 	UserSettings previousSettings_{};
-	SceneList::CameraInitialSate cameraInitialSate_{};
+	SceneList::CameraInitialState cameraInitialSate_{};
 	ModelViewController modelViewController_{};
 
 	std::unique_ptr<const Assets::Scene> scene_;

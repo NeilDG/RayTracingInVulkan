@@ -314,7 +314,7 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 			for (int b = -11; b < 11; b++)
 			{
 				float matVal = MathUtils::randomFloat();
-				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
+				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (2 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
 				if ((center - vec3(4.0, 0.2f, 0.0f)).length() > 0.9f)
 				{
 					Material materialInstance;
@@ -340,11 +340,19 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 				}
 			}
 		}
+
+		for (int a = -5; a < 5; a++)
+		{
+			for (int b = -5; b < 5; b++)
+			{
+				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
+
+				//add additional reflective spheres
+				Material materialInstance = Material::Dielectric(1.5f);
+				Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.1f, 0.2f), materialInstance, isProcedural);
+				models.push_back(modelInstance);
+			}
+		}
 	}
-
-	// textures.push_back(Texture::LoadTexture("../assets/textures/2k_mars.jpg", Vulkan::SamplerConfig()));
-	// textures.push_back(Texture::LoadTexture("../assets/textures/2k_moon.jpg", Vulkan::SamplerConfig()));
-	// textures.push_back(Texture::LoadTexture("../assets/textures/land_ocean_ice_cloud_2048.png", Vulkan::SamplerConfig()));
-
 	return std::forward_as_tuple(std::move(models), std::move(textures));
 }

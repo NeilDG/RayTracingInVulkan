@@ -20,8 +20,8 @@
 #include "Assets/UniformBuffer.hpp"
 #include "Utilities/Exception.hpp"
 #include <array>
-
 #include "From-GDGRAP2/Debug.h"
+#include "From-GDGRAP2/EventBroadcaster.h"
 
 namespace Vulkan {
 
@@ -39,6 +39,7 @@ Application::Application(const WindowConfig& windowConfig, const VkPresentModeKH
 
 	//initialize libs
 	Debug::initialize();
+	EventBroadcaster::initialize();
 }
 
 Application::~Application()
@@ -53,6 +54,7 @@ Application::~Application()
 	window_.reset();
 
 	Debug::destroy();
+	EventBroadcaster::destroy();
 }
 
 const std::vector<VkExtensionProperties>& Application::Extensions() const

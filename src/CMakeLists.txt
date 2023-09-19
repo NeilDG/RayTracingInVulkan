@@ -150,6 +150,9 @@ set(src_files_from_gdgrap2
 	From-GDGRAP2/RTRules.h
 	From-GDGRAP2/UIManager.cpp
 	From-GDGRAP2/UIManager.h
+	From-GDGRAP2/EventBroadcaster.cpp
+	From-GDGRAP2/EventBroadcaster.h
+	From-GDGRAP2/EventNames.h
 	From-GDGRAP2/RTConfig.h
 )
 

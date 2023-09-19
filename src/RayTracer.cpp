@@ -28,11 +28,14 @@ RayTracer::RayTracer(const UserSettings& userSettings, const Vulkan::WindowConfi
 	userSettings_(userSettings)
 {
 	CheckFramebufferSize();
+
+	EventBroadcaster::getInstance()->addObserver(EventNames::ON_SCENE_LOADED, this);
 }
 
 RayTracer::~RayTracer()
 {
 	scene_.reset();
+	EventBroadcaster::getInstance()->removeObserver(EventNames::ON_SCENE_LOADED);
 }
 
 Assets::UniformBufferObject RayTracer::GetUniformBufferObject(const VkExtent2D extent) const
@@ -258,6 +261,22 @@ void RayTracer::OnScroll(const double xoffset, const double yoffset)
 		UserSettings::FieldOfViewMaxValue);
 
 	resetAccumulation_ = prevFov != userSettings_.FieldOfView;
+}
+
+void RayTracer::onTriggeredEvent(String eventName, std::shared_ptr<Parameters> parameters)
+{
+	// {"Cube And Spheres", CubeAndSpheres},
+	// { "Ray Tracing In One Weekend", RayTracingInOneWeekend },
+	// { "Planets In One Weekend", PlanetsInOneWeekend },
+	// { "Lucy In One Weekend", LucyInOneWeekend },
+	// { "Cornell Box", CornellBox },
+	// { "Cornell Box & Lucy", CornellBoxLucy },
+
+	if (eventName == EventNames::ON_SCENE_LOADED)
+	{
+		int sceneIndex = parameters->getIntData("SCENE_INDEX", 0);
+		userSettings_.SceneIndex = sceneIndex;
+	}
 }
 
 void RayTracer::LoadScene(const uint32_t sceneIndex)

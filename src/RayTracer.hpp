@@ -4,8 +4,9 @@
 #include "SceneList.hpp"
 #include "UserSettings.hpp"
 #include "Vulkan/RayTracing/Application.hpp"
+#include "From-GDGRAP2/EventBroadcaster.h"
 
-class RayTracer final : public Vulkan::RayTracing::Application
+class RayTracer final : public Vulkan::RayTracing::Application, public Observer
 {
 public:
 
@@ -35,6 +36,8 @@ protected:
 	void OnCursorPosition(double xpos, double ypos) override;
 	void OnMouseButton(int button, int action, int mods) override;
 	void OnScroll(double xoffset, double yoffset) override;
+
+	void onTriggeredEvent(String eventName, std::shared_ptr<Parameters> parameters) override;
 
 private:
 

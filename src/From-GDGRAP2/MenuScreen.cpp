@@ -2,6 +2,8 @@
 #include "imgui.h"
 #include <iostream>
 
+#include "EventBroadcaster.h"
+
 // #include "GameObjectManager.h"
 
 MenuScreen::MenuScreen(): AUIScreen("MenuScreen")
@@ -122,6 +124,10 @@ void MenuScreen::OnLoadSphereWorld()
 	// GameObjectManager::getInstance()->clearAll();
 	// RayTracingProper::getInstance()->generateSphereWorld();
 	// RayTracingProper::getInstance()->renderSceneFromHierarchy();
+
+	std::shared_ptr<Parameters> parameters = std::make_shared<Parameters>(EventNames::ON_SCENE_LOADED);
+	parameters->encodeInt("SCENE_INDEX", 1);
+	EventBroadcaster::getInstance()->broadcastEventWithParams(EventNames::ON_SCENE_LOADED, parameters);
 }
 
 void MenuScreen::OnLoadBoxWorld()
@@ -138,4 +144,8 @@ void MenuScreen::OnLoadCornellBox()
 	// RayTracingProper::getInstance()->generateCornellBox();
 	//
 	// RayTracingProper::getInstance()->renderSceneFromHierarchy();
+
+	std::shared_ptr<Parameters> parameters = std::make_shared<Parameters>(EventNames::ON_SCENE_LOADED);
+	parameters->encodeInt("SCENE_INDEX", 4);
+	EventBroadcaster::getInstance()->broadcastEventWithParams(EventNames::ON_SCENE_LOADED, parameters);
 }

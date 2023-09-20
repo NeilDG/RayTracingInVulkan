@@ -13,6 +13,9 @@
 #include <iostream>
 #include <sstream>
 
+#include "From-GDGRAP2/Debug.h"
+#include "From-GDGRAP2/ModelManager.h"
+
 namespace
 {
 	const bool EnableValidationLayers =
@@ -30,12 +33,14 @@ RayTracer::RayTracer(const UserSettings& userSettings, const Vulkan::WindowConfi
 	CheckFramebufferSize();
 
 	EventBroadcaster::getInstance()->addObserver(EventNames::ON_SCENE_LOADED, this);
+	EventBroadcaster::getInstance()->addObserver(EventNames::ON_MARK_SCENE_DIRTY, this);
 }
 
 RayTracer::~RayTracer()
 {
 	scene_.reset();
 	EventBroadcaster::getInstance()->removeObserver(EventNames::ON_SCENE_LOADED);
+	EventBroadcaster::getInstance()->removeObserver(EventNames::ON_MARK_SCENE_DIRTY);
 }
 
 Assets::UniformBufferObject RayTracer::GetUniformBufferObject(const VkExtent2D extent) const
@@ -114,13 +119,25 @@ void RayTracer::DeleteSwapChain()
 
 void RayTracer::DrawFrame()
 {
-	// Check if the scene has been changed by the user.
+	// Check if the scene has been changed by the user via select new scene
 	if (sceneIndex_ != static_cast<uint32_t>(userSettings_.SceneIndex))
 	{
 		Device().WaitIdle();
 		DeleteSwapChain();
 		DeleteAccelerationStructures();
 		LoadScene(userSettings_.SceneIndex);
+		CreateAccelerationStructures();
+		CreateSwapChain();
+		return;
+	}
+	//If user edited a certain model
+	if(this->isSceneDirty)
+	{
+		this->isSceneDirty = false;
+		Device().WaitIdle();
+		DeleteSwapChain();
+		DeleteAccelerationStructures();
+		ReloadModifiedScene();
 		CreateAccelerationStructures();
 		CreateSwapChain();
 		return;
@@ -277,6 +294,11 @@ void RayTracer::onTriggeredEvent(String eventName, std::shared_ptr<Parameters> p
 		int sceneIndex = parameters->getIntData("SCENE_INDEX", 0);
 		userSettings_.SceneIndex = sceneIndex;
 	}
+	else if(eventName == EventNames::ON_MARK_SCENE_DIRTY)
+	{
+		this->isSceneDirty = true;
+		Debug::Log("Scene marked as dirty! \n");
+	}
 }
 
 void RayTracer::LoadScene(const uint32_t sceneIndex)
@@ -291,6 +313,33 @@ void RayTracer::LoadScene(const uint32_t sceneIndex)
 	
 	scene_.reset(new Assets::Scene(CommandPool(), std::move(models), std::move(textures)));
 	sceneIndex_ = sceneIndex;
+
+	userSettings_.FieldOfView = cameraInitialSate_.FieldOfView;
+	userSettings_.Aperture = cameraInitialSate_.Aperture;
+	userSettings_.FocusDistance = cameraInitialSate_.FocusDistance;
+
+	modelViewController_.Reset(cameraInitialSate_.ModelView);
+
+	periodTotalFrames_ = 0;
+	resetAccumulation_ = true;
+}
+
+/**
+ * \brief Loads the modified scene but using the model manager as reference.
+ * \param sceneIndex 
+ */
+void RayTracer::ReloadModifiedScene()
+{
+	std::vector<Assets::Model> models = ModelManager::getInstance()->getAllObjectModels();
+	std::vector<Assets::Texture> textures = SceneList::AssembleTextureList();
+
+	// If there are no texture, add a dummy one. It makes the pipeline setup a lot easier.
+	if (textures.empty())
+	{
+		textures.push_back(Assets::Texture::LoadTexture("../assets/textures/white.png", Vulkan::SamplerConfig()));
+	}
+
+	scene_.reset(new Assets::Scene(CommandPool(), std::move(models), std::move(textures)));
 
 	userSettings_.FieldOfView = cameraInitialSate_.FieldOfView;
 	userSettings_.Aperture = cameraInitialSate_.Aperture;

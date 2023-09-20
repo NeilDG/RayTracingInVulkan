@@ -56,6 +56,8 @@ private:
 
 	std::shared_ptr<Assets::Model> modelRef;
 
+	void performModelTransform();
+
 	friend class ModelManager;
  };
 

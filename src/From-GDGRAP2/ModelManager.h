@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include "Assets/Texture.hpp"
 #include "From-GDGRAP2/GameObject.h"
 
 /**
@@ -23,8 +25,8 @@ public:
 
 	std::shared_ptr<GameObject> findObjectByName(String name);
 	List getAllObjects();
-	ModelList getAllObjectModels() const;
-	int activeObjects();
+	
+	int activeObjects() const;
 	std::shared_ptr<GameObject> getLastObject();
 	void addObject(std::shared_ptr<GameObject> gameObject);
 	void createObject(GameObject::PrimitiveType type);
@@ -37,6 +39,8 @@ public:
 
 	void clearAllObjects();
 
+	ModelList getAllObjectModels() const;
+
 private:
 	ModelManager() = default;
 	~ModelManager() = default;
@@ -46,6 +50,7 @@ private:
 
 	HashTable gameObjectMap;
 	List gameObjectList;
+
 	std::shared_ptr<GameObject> selectedObject = nullptr;
 };
 

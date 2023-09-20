@@ -116,20 +116,20 @@ void InspectorScreen::drawMaterialsTab()
 
 void InspectorScreen::onTransformUpdate() const
 {
-	// if (this->selectedObject != nullptr) {
-	// 	// ActionHistory::getInstance()->recordAction(this->selectedObject);
-	//
-	// 	this->selectedObject->setPosition(this->positionDisplay[0], this->positionDisplay[1], this->positionDisplay[2]);
-	// 	this->selectedObject->setRotAngles(this->rotationDisplay[0], this->rotationDisplay[1], this->rotationDisplay[2]);
-	//
-	// 	if(this->selectedObject->getType() == AHittable::SPHERE)
-	// 	{
-	// 		this->selectedObject->setScale(this->scaleDisplay[0], this->scaleDisplay[0], this->scaleDisplay[0]);
-	// 	}
-	// 	else
-	// 	{
-	// 		this->selectedObject->setScale(this->scaleDisplay[0], this->scaleDisplay[1], this->scaleDisplay[2]);
-	// 	}
-	// 	
-	// }
+	if (this->selectedObject != nullptr) {
+		// ActionHistory::getInstance()->recordAction(this->selectedObject);
+	
+		this->selectedObject->setPosition(this->positionDisplay[0], this->positionDisplay[1], this->positionDisplay[2]);
+		this->selectedObject->setRotAngles(this->rotationDisplay[0], this->rotationDisplay[1], this->rotationDisplay[2]);
+	
+		if(this->selectedObject->getType() == GameObject::PrimitiveType::SPHERE)
+		{
+			this->selectedObject->setScale(this->scaleDisplay[0], this->scaleDisplay[0], this->scaleDisplay[0]);
+		}
+		else
+		{
+			this->selectedObject->setScale(this->scaleDisplay[0], this->scaleDisplay[1], this->scaleDisplay[2]);
+		}
+		
+	}
 }

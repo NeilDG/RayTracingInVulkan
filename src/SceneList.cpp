@@ -298,84 +298,94 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 
 	bool isProcedural = false;
 	// std::vector<Model> models;
-	std::vector<Texture> textures;
 
-	Model sphere1Model = Model::CreateSphere(vec3(0, -1000, 0), 1000, Material::Lambertian(vec3(0.5f, 0.5f, 0.5f)), isProcedural);
+	vec3 pos = vec3(0, -1000, 0); float center = 1000;
+	Model sphere1Model = Model::CreateSphere(pos, center, Material::Lambertian(vec3(0.5f, 0.5f, 0.5f)), isProcedural);
 	std::shared_ptr<GameObject> sphere1 = std::make_shared<GameObject>("GroundSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere1Model));
+	// sphere1->setPosition(pos); sphere1->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere1);
 	// models.push_back(sphere1Model);
 
-	Model sphere2Model = Model::CreateSphere(vec3(0, 1, 0), 1.0f, Material::Dielectric(1.5f), isProcedural);
+	pos = vec3(0, 1, 0); center = 1.0f;
+	Model sphere2Model = Model::CreateSphere(pos, 1.0f, Material::Dielectric(1.5f), isProcedural);
 	std::shared_ptr<GameObject> sphere2 = std::make_shared<GameObject>("CenterSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere2Model));
+	// sphere2->setPosition(pos); sphere2->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere2);
 
-	Model sphere3Model = Model::CreateSphere(vec3(-8, 2.5f, 1), 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural);
+	pos = vec3(-8, 2.5f, 1); center = 2.5f;
+	Model sphere3Model = Model::CreateSphere(pos, 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural);
 	std::shared_ptr<GameObject> sphere3 = std::make_shared<GameObject>("LeftSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere3Model));
+	// sphere3->setPosition(pos); sphere3->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere3);
 
-	Model sphere4Model = Model::CreateSphere(vec3(4, 1, 0), 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural);
+	pos = vec3(4, 1, 0); center = 1.0f;
+	Model sphere4Model = Model::CreateSphere(pos, 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural);
 	std::shared_ptr<GameObject> sphere4 = std::make_shared<GameObject>("RightSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere4Model));
+	// sphere4->setPosition(pos); sphere4->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere4);
 
-	// models.push_back(Model::CreateSphere(vec3(0, 1, 0), 1.0f, Material::Dielectric(1.5f), isProcedural));
-	// models.push_back(Model::CreateSphere(vec3(-4, 1, 0), 1.0f, Material::Lambertian(vec3(0.4f, 0.2f, 0.1f)), isProcedural));
-	// models.push_back(Model::CreateSphere(vec3(-8, 2.5f, 1), 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural));
-	// models.push_back(Model::CreateSphere(vec3(4, 1, 0), 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural));
-
-	for(int repeats = 0; repeats < 2; repeats++)
-	{
-		for (int a = -11; a < 11; a++)
-		{
-			for (int b = -11; b < 11; b++)
-			{
-				float matVal = MathUtils::randomFloat();
-				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (2 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
-				if ((center - vec3(4.0, 0.2f, 0.0f)).length() > 0.9f)
-				{
-					Material materialInstance;
-	
-					if (matVal < 0.8)
-					{
-						vec3 albedo = 2.0f * VectorUtils::randomFloatVec3();
-						float fuzziness = MathUtils::randomFloat(0.0f, 0.95f);
-						materialInstance = Material::Metallic(albedo, fuzziness, MathUtils::randomInt(0, textures.size()));
-					}
-					else if(matVal < 0.95)
-					{
-						materialInstance = Material::Dielectric(MathUtils::randomFloat(0.5f, 2.5f));
-					}
-					else
-					{
-						vec3 albedo = VectorUtils::randomFloatVec3();
-						materialInstance = Material::DiffuseLight(albedo);
-					}
-	
-					Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.2f, 0.4f), materialInstance, isProcedural);
-					std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
-					ModelManager::getInstance()->addObject(objectInstance);
-				}
-			}
-		}
-	
-		for (int a = -5; a < 5; a++)
-		{
-			for (int b = -5; b < 5; b++)
-			{
-				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
-	
-				//add additional reflective spheres
-				Material materialInstance = Material::Dielectric(1.5f);
-				Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.1f, 0.2f), materialInstance, isProcedural);
-				std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
-				ModelManager::getInstance()->addObject(objectInstance);
-			}
-		}
-	}
+	// for(int repeats = 0; repeats < 2; repeats++)
+	// {
+	// 	for (int a = -11; a < 11; a++)
+	// 	{
+	// 		for (int b = -11; b < 11; b++)
+	// 		{
+	// 			float matVal = MathUtils::randomFloat();
+	// 			vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (2 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
+	// 			if ((center - vec3(4.0, 0.2f, 0.0f)).length() > 0.9f)
+	// 			{
+	// 				Material materialInstance;
+	//
+	// 				if (matVal < 0.8)
+	// 				{
+	// 					vec3 albedo = 2.0f * VectorUtils::randomFloatVec3();
+	// 					float fuzziness = MathUtils::randomFloat(0.0f, 0.95f);
+	// 					materialInstance = Material::Metallic(albedo, fuzziness, MathUtils::randomInt(0, 3));
+	// 				}
+	// 				else if(matVal < 0.95)
+	// 				{
+	// 					materialInstance = Material::Dielectric(MathUtils::randomFloat(0.5f, 2.5f));
+	// 				}
+	// 				else
+	// 				{
+	// 					vec3 albedo = VectorUtils::randomFloatVec3();
+	// 					materialInstance = Material::DiffuseLight(albedo);
+	// 				}
+	//
+	// 				Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.2f, 0.4f), materialInstance, isProcedural);
+	// 				std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
+	// 				ModelManager::getInstance()->addObject(objectInstance);
+	// 			}
+	// 		}
+	// 	}
+	//
+	// 	for (int a = -5; a < 5; a++)
+	// 	{
+	// 		for (int b = -5; b < 5; b++)
+	// 		{
+	// 			vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
+	//
+	// 			//add additional reflective spheres
+	// 			Material materialInstance = Material::Dielectric(1.5f);
+	// 			Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.1f, 0.2f), materialInstance, isProcedural);
+	// 			std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
+	// 			ModelManager::getInstance()->addObject(objectInstance);
+	// 		}
+	// 	}
+	// }
 
 	std::vector<Model> models = ModelManager::getInstance()->getAllObjectModels();
 
+	std::vector<Texture> textures = AssembleTextureList();
+	return std::forward_as_tuple(std::move(models), std::move(textures));
+}
+
+std::vector<Assets::Texture> SceneList::AssembleTextureList()
+{
+	std::vector<Texture> textures;
 	textures.push_back(Texture::LoadTexture("../assets/textures/2k_mars.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/2k_moon.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/land_ocean_ice_cloud_2048.png", Vulkan::SamplerConfig()));
-	return std::forward_as_tuple(std::move(models), std::move(textures));
+
+	return textures;
 }

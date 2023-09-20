@@ -42,6 +42,7 @@ protected:
 private:
 
 	void LoadScene(uint32_t sceneIndex);
+	void ReloadModifiedScene();
 	void CheckAndUpdateBenchmarkState(double prevTime);
 	void CheckFramebufferSize() const;
 
@@ -64,4 +65,6 @@ private:
 	double sceneInitialTime_{};
 	double periodInitialTime_{};
 	uint32_t periodTotalFrames_{};
+
+	bool isSceneDirty = false;
 };

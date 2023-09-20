@@ -51,7 +51,7 @@ ModelManager::ModelList ModelManager::getAllObjectModels() const
 	return models;
 }
 
-int ModelManager::activeObjects()
+int ModelManager::activeObjects() const
 {
 	return this->gameObjectList.size();
 }

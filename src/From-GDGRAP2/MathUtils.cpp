@@ -23,16 +23,6 @@ float MathUtils::randomFloat(float min, float max)
 	return min + (max - min) * randomFloat();
 }
 
-MathUtils::Vector3D MathUtils::randomFloatVec3()
-{
-	return Vector3D(randomFloat(), randomFloat(), randomFloat());
-}
-
-MathUtils::Vector3D MathUtils::randomFloatVec3(float min, float max)
-{
-	return Vector3D(randomFloat(min, max), randomFloat(min, max), randomFloat(min, max));
-}
-
 int MathUtils::randomInt(int min, int max, bool exclusive)
 {
 	if(exclusive)

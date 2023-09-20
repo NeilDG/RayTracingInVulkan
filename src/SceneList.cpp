@@ -5,7 +5,10 @@
 #include <functional>
 #include <random>
 
+#include "From-GDGRAP2/GameObject.h"
 #include "From-GDGRAP2/MathUtils.h"
+#include "From-GDGRAP2/ModelManager.h"
+#include "From-GDGRAP2/VectorUtils.h"
 
 using namespace glm;
 using Assets::Material;
@@ -294,18 +297,30 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 	std::function<float()> random = std::bind(std::uniform_real_distribution<float>(), engine);
 
 	bool isProcedural = false;
-	std::vector<Model> models;
+	// std::vector<Model> models;
 	std::vector<Texture> textures;
 
-	models.push_back(Model::CreateSphere(vec3(0, -1000, 0), 1000, Material::Lambertian(vec3(0.5f, 0.5f, 0.5f)), isProcedural));
-	models.push_back(Model::CreateSphere(vec3(0, 1, 0), 1.0f, Material::Dielectric(1.5f), isProcedural));
-	models.push_back(Model::CreateSphere(vec3(-4, 1, 0), 1.0f, Material::Lambertian(vec3(0.4f, 0.2f, 0.1f)), isProcedural));
-	models.push_back(Model::CreateSphere(vec3(-8, 2.5f, 1), 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural));
-	models.push_back(Model::CreateSphere(vec3(4, 1, 0), 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural));
+	Model sphere1Model = Model::CreateSphere(vec3(0, -1000, 0), 1000, Material::Lambertian(vec3(0.5f, 0.5f, 0.5f)), isProcedural);
+	std::shared_ptr<GameObject> sphere1 = std::make_shared<GameObject>("GroundSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere1Model));
+	ModelManager::getInstance()->addObject(sphere1);
+	// models.push_back(sphere1Model);
 
-	textures.push_back(Texture::LoadTexture("../assets/textures/2k_mars.jpg", Vulkan::SamplerConfig()));
-	textures.push_back(Texture::LoadTexture("../assets/textures/2k_moon.jpg", Vulkan::SamplerConfig()));
-	textures.push_back(Texture::LoadTexture("../assets/textures/land_ocean_ice_cloud_2048.png", Vulkan::SamplerConfig()));
+	Model sphere2Model = Model::CreateSphere(vec3(0, 1, 0), 1.0f, Material::Dielectric(1.5f), isProcedural);
+	std::shared_ptr<GameObject> sphere2 = std::make_shared<GameObject>("CenterSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere2Model));
+	ModelManager::getInstance()->addObject(sphere2);
+
+	Model sphere3Model = Model::CreateSphere(vec3(-8, 2.5f, 1), 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural);
+	std::shared_ptr<GameObject> sphere3 = std::make_shared<GameObject>("LeftSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere3Model));
+	ModelManager::getInstance()->addObject(sphere3);
+
+	Model sphere4Model = Model::CreateSphere(vec3(4, 1, 0), 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural);
+	std::shared_ptr<GameObject> sphere4 = std::make_shared<GameObject>("RightSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere4Model));
+	ModelManager::getInstance()->addObject(sphere4);
+
+	// models.push_back(Model::CreateSphere(vec3(0, 1, 0), 1.0f, Material::Dielectric(1.5f), isProcedural));
+	// models.push_back(Model::CreateSphere(vec3(-4, 1, 0), 1.0f, Material::Lambertian(vec3(0.4f, 0.2f, 0.1f)), isProcedural));
+	// models.push_back(Model::CreateSphere(vec3(-8, 2.5f, 1), 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural));
+	// models.push_back(Model::CreateSphere(vec3(4, 1, 0), 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural));
 
 	for(int repeats = 0; repeats < 2; repeats++)
 	{
@@ -318,10 +333,10 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 				if ((center - vec3(4.0, 0.2f, 0.0f)).length() > 0.9f)
 				{
 					Material materialInstance;
-
+	
 					if (matVal < 0.8)
 					{
-						vec3 albedo = 2.0f * MathUtils::randomFloatVec3();
+						vec3 albedo = 2.0f * VectorUtils::randomFloatVec3();
 						float fuzziness = MathUtils::randomFloat(0.0f, 0.95f);
 						materialInstance = Material::Metallic(albedo, fuzziness, MathUtils::randomInt(0, textures.size()));
 					}
@@ -331,28 +346,36 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 					}
 					else
 					{
-						vec3 albedo = MathUtils::randomFloatVec3();
+						vec3 albedo = VectorUtils::randomFloatVec3();
 						materialInstance = Material::DiffuseLight(albedo);
 					}
-
+	
 					Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.2f, 0.4f), materialInstance, isProcedural);
-					models.push_back(modelInstance);
+					std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
+					ModelManager::getInstance()->addObject(objectInstance);
 				}
 			}
 		}
-
+	
 		for (int a = -5; a < 5; a++)
 		{
 			for (int b = -5; b < 5; b++)
 			{
 				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
-
+	
 				//add additional reflective spheres
 				Material materialInstance = Material::Dielectric(1.5f);
 				Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.1f, 0.2f), materialInstance, isProcedural);
-				models.push_back(modelInstance);
+				std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
+				ModelManager::getInstance()->addObject(objectInstance);
 			}
 		}
 	}
+
+	std::vector<Model> models = ModelManager::getInstance()->getAllObjectModels();
+
+	textures.push_back(Texture::LoadTexture("../assets/textures/2k_mars.jpg", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/textures/2k_moon.jpg", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/textures/land_ocean_ice_cloud_2048.png", Vulkan::SamplerConfig()));
 	return std::forward_as_tuple(std::move(models), std::move(textures));
 }

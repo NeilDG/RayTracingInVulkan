@@ -1,6 +1,6 @@
 #pragma once
 #include "AUIScreen.h"
-// #include "AHittable.h"
+#include "GameObject.h"
 
 class Texture;
 class InspectorScreen :    public AUIScreen
@@ -25,7 +25,7 @@ private:
 	float scaleDisplay[3] = { 1.0f, 1.0f, 1.0f };
 	bool popupOpen = false;
 
-	// std::shared_ptr<AHittable> selectedObject = nullptr;
+	std::shared_ptr<GameObject> selectedObject = nullptr;
 	const String DEFAULT_MATERIAL = "None";
 	String materialPath = DEFAULT_MATERIAL;
 	String materialName = DEFAULT_MATERIAL;

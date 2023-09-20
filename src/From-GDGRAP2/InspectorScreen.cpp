@@ -1,8 +1,8 @@
 #include "InspectorScreen.h"
 #include "imgui.h"
-// #include "GameObjectManager.h"
+#include "ModelManager.h"
 #include "UIManager.h"
-// #include "AHittable.h"
+#include "GameObject.h"
 
 InspectorScreen::InspectorScreen() : AUIScreen("InspectorScreen")
 {
@@ -17,55 +17,55 @@ void InspectorScreen::drawUI()
 {
 	
 	ImGui::Begin("Inspector Window", 0, ImGuiWindowFlags_NoResize);
-	// this->selectedObject = GameObjectManager::getInstance()->getSelectedObject();
-	// if (this->selectedObject != nullptr) {
-	// 	String name =  this->selectedObject->getName();
-	// 	ImGui::Text("Selected Object: %s", name.c_str());
-	// 	this->updateTransformDisplays();
-	// 	bool enabled = this->selectedObject->isEnabled();
-	// 	if (ImGui::Checkbox("Enabled", &enabled)) { this->selectedObject->setEnabled(enabled); }
-	// 	ImGui::SameLine();
-	// 	if (ImGui::Button("Delete")) { 
-	// 		GameObjectManager::getInstance()->deleteObject(this->selectedObject);
-	// 		GameObjectManager::getInstance()->setSelectedObject(static_cast<std::shared_ptr<AHittable>>(nullptr));
-	// 	}
-	// 	if (ImGui::InputFloat3("Position", this->positionDisplay)) { this->onTransformUpdate(); }
-	// 	if (ImGui::InputFloat3("Rotation", this->rotationDisplay)) { this->onTransformUpdate(); }
-	//
-	// 	if(this->selectedObject->getType() == AHittable::SPHERE)
-	// 	{
-	// 		if (ImGui::InputFloat("Radius", this->scaleDisplay)) { this->onTransformUpdate(); }
-	// 	}
-	// 	else {
-	// 		if (ImGui::InputFloat3("Scale", this->scaleDisplay)) { this->onTransformUpdate(); }
-	// 	}
-	//
-	// 	this->drawMaterialsTab();
-	// }
-	// else {
-	// 	ImGui::Text("No object selected. Select an object first.");
-	// }
-	ImGui::Text("No object selected. Select an object first.");
+	this->selectedObject = ModelManager::getInstance()->getSelectedObject();
+	if (this->selectedObject != nullptr) {
+		String name =  this->selectedObject->getName();
+		ImGui::Text("Selected Object: %s", name.c_str());
+		this->updateTransformDisplays();
+		bool enabled = this->selectedObject->isEnabled();
+		if (ImGui::Checkbox("Enabled", &enabled)) { this->selectedObject->setEnabled(enabled); }
+		ImGui::SameLine();
+		if (ImGui::Button("Delete")) { 
+			ModelManager::getInstance()->deleteObject(this->selectedObject);
+			ModelManager::getInstance()->setSelectedObject(static_cast<std::shared_ptr<GameObject>>(nullptr));
+		}
+		if (ImGui::InputFloat3("Position", this->positionDisplay)) { this->onTransformUpdate(); }
+		if (ImGui::InputFloat3("Rotation", this->rotationDisplay)) { this->onTransformUpdate(); }
+	
+		if(this->selectedObject->getType() == GameObject::PrimitiveType::SPHERE)
+		{
+			if (ImGui::InputFloat("Radius", this->scaleDisplay)) { this->onTransformUpdate(); }
+		}
+		else {
+			if (ImGui::InputFloat3("Scale", this->scaleDisplay)) { this->onTransformUpdate(); }
+		}
+
+		this->drawMaterialsTab();
+	}
+	else {
+		ImGui::Text("No object selected. Select an object first.");
+	}
+
 	ImGui::End();
 }
 
 void InspectorScreen::updateTransformDisplays()
 {
+	typedef glm::vec3 vec3;
+	vec3 pos = this->selectedObject->getTransform();
+	this->positionDisplay[0] = pos.x;
+	this->positionDisplay[1] = pos.y;
+	this->positionDisplay[2] = pos.z;
 	
-	// Vector3D pos = this->selectedObject->getTransform();
-	// this->positionDisplay[0] = pos.getX();
-	// this->positionDisplay[1] = pos.getY();
-	// this->positionDisplay[2] = pos.getZ();
-	//
-	// Vector3D rot = this->selectedObject->getRotAngles();
-	// this->rotationDisplay[0] = rot.getX();
-	// this->rotationDisplay[1] = rot.getY();
-	// this->rotationDisplay[2] = rot.getZ();
-	//
-	// Vector3D scale = this->selectedObject->getScale();
-	// this->scaleDisplay[0] = scale.getX();
-	// this->scaleDisplay[1] = scale.getY();
-	// this->scaleDisplay[2] = scale.getZ();
+	vec3 rot = this->selectedObject->getRotAngles();
+	this->rotationDisplay[0] = rot.x;
+	this->rotationDisplay[1] = rot.y;
+	this->rotationDisplay[2] = rot.z;
+
+	vec3 scale = this->selectedObject->getScale();
+	this->scaleDisplay[0] = scale.x;
+	this->scaleDisplay[1] = scale.y;
+	this->scaleDisplay[2] = scale.z;
 }
 
 void InspectorScreen::SendResult(String materialPath)

@@ -50,6 +50,9 @@ private:
 	PrimitiveType type;
 	bool enabled;
 
+	typedef glm::mat4 mat4;
+	vec3 origin = VectorUtils::zeros();
+
 	vec3 transform = VectorUtils::zeros();
 	vec3 rotAngles = VectorUtils::zeros();
 	vec3 scale = VectorUtils::ones();

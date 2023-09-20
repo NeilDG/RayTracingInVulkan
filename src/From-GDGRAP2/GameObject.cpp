@@ -111,17 +111,16 @@ void GameObject::performModelTransform()
 	// 			vec3(scaleFactor)),
 	// 		radians(90.0f), vec3(0, 1, 0)));
 
-	typedef glm::mat4 mat4;
-	mat4 identity = glm::mat4(1);
-	mat4 origin = identity * this->transform;
-	mat4 translateOp = glm::translate(identity, this->transform);
-	// mat4 scaleOp = glm::scale(translateOp, this->scale);
+	vec3 translation = this->transform - this->origin;
+	mat4 translateOp = glm::translate(mat4(1), translation);
+	mat4 scaleOp = glm::scale(translateOp, this->scale);
 	// mat4 rotateXOp = glm::rotate(scaleOp, glm::radians(this->rotAngles.x), vec3(1, 0, 0));
 	// mat4 rotateYOp = glm::rotate(rotateXOp, glm::radians(this->rotAngles.y), vec3(0, 1, 0));
 	// mat4 rotateZOp = glm::rotate(rotateYOp, glm::radians(this->rotAngles.z), vec3(0, 0, 1));
 
 	// this->modelRef->Transform(rotateZOp);
-	this->modelRef->Transform(translateOp);
+	this->modelRef->Transform(scaleOp);
+	this->origin = this->transform;
 
 	EventBroadcaster::getInstance()->broadcastEvent(EventNames::ON_MARK_SCENE_DIRTY);
 

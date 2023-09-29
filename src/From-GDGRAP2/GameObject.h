@@ -51,7 +51,9 @@ private:
 	bool enabled;
 
 	typedef glm::mat4 mat4;
+	mat4 objectMatrix = mat4(1);
 	vec3 origin = VectorUtils::zeros();
+	vec3 originScale = VectorUtils::ones();
 
 	vec3 transform = VectorUtils::zeros();
 	vec3 rotAngles = VectorUtils::zeros();
@@ -60,6 +62,7 @@ private:
 	std::shared_ptr<Assets::Model> modelRef;
 
 	void performModelTransform();
+	void performModelScale();
 
 	friend class ModelManager;
  };

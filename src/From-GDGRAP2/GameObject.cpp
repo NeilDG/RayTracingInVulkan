@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
+#include <iostream>
+
 #include "EventBroadcaster.h"
 
 GameObject::GameObject()
@@ -67,7 +69,7 @@ void GameObject::setPosition(float x, float y, float z)
 void GameObject::setPosition(vec3 newPos)
 {
 	this->transform = newPos;
-	// this->performModelTransform(); TODO:: temporary workaround. transform operations are conflicting with initial scene model loading
+	this->performModelTransform();
 }
 
 void GameObject::setRotAngles(float x, float y, float z)
@@ -85,13 +87,13 @@ void GameObject::setRotAngles(vec3 newRot)
 void GameObject::setScale(float x, float y, float z)
 {
 	this->scale = vec3(x, y, z);
-	this->performModelTransform();
+	this->performModelScale();
 }
 
 void GameObject::setScale(vec3 newScale)
 {
 	this->scale = newScale;
-	// this->performModelTransform();
+	this->performModelScale();
 }
 
 std::shared_ptr<Assets::Model> GameObject::getModel()
@@ -111,17 +113,27 @@ void GameObject::performModelTransform()
 	// 			vec3(scaleFactor)),
 	// 		radians(90.0f), vec3(0, 1, 0)));
 
-	vec3 translation = this->transform - this->origin;
-	mat4 translateOp = glm::translate(mat4(1), translation);
-	mat4 scaleOp = glm::scale(translateOp, this->scale);
+	mat4 translateOp = glm::translate(mat4(1), this->transform - this->origin);
+	this->origin = this->transform;
+
 	// mat4 rotateXOp = glm::rotate(scaleOp, glm::radians(this->rotAngles.x), vec3(1, 0, 0));
 	// mat4 rotateYOp = glm::rotate(rotateXOp, glm::radians(this->rotAngles.y), vec3(0, 1, 0));
 	// mat4 rotateZOp = glm::rotate(rotateYOp, glm::radians(this->rotAngles.z), vec3(0, 0, 1));
 
 	// this->modelRef->Transform(rotateZOp);
+	this->modelRef->Transform(translateOp);
+	
+
+	
+
+}
+
+void GameObject::performModelScale()
+{
+	mat4 scaleOp = glm::scale(mat4(1), this->scale);
+	this->scale = VectorUtils::ones(); //TODO:: Workaround. Reset to identity
+
 	this->modelRef->Transform(scaleOp);
-	this->origin = this->transform;
-
+	this->objectMatrix = scaleOp;
 	EventBroadcaster::getInstance()->broadcastEvent(EventNames::ON_MARK_SCENE_DIRTY);
-
 }

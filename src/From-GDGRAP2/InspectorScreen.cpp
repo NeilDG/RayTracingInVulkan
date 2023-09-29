@@ -29,15 +29,15 @@ void InspectorScreen::drawUI()
 			ModelManager::getInstance()->deleteObject(this->selectedObject);
 			ModelManager::getInstance()->setSelectedObject(static_cast<std::shared_ptr<GameObject>>(nullptr));
 		}
-		if (ImGui::InputFloat3("Position", this->positionDisplay)) { this->onTransformUpdate(); }
-		if (ImGui::InputFloat3("Rotation", this->rotationDisplay)) { this->onTransformUpdate(); }
+		if (ImGui::InputFloat3("Position", this->positionDisplay, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) { this->onTransformUpdate(); }
+		if (ImGui::InputFloat3("Rotation", this->rotationDisplay, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) { this->onTransformUpdate(); }
 	
 		if(this->selectedObject->getType() == GameObject::PrimitiveType::SPHERE)
 		{
-			if (ImGui::InputFloat("Radius", this->scaleDisplay)) { this->onTransformUpdate(); }
+			if (ImGui::InputFloat("Resize", this->scaleDisplay, 0, 0, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) { this->onTransformUpdate(); }
 		}
 		else {
-			if (ImGui::InputFloat3("Scale", this->scaleDisplay)) { this->onTransformUpdate(); }
+			if (ImGui::InputFloat3("Scale", this->scaleDisplay, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) { this->onTransformUpdate(); }
 		}
 
 		this->drawMaterialsTab();

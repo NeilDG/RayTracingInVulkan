@@ -324,55 +324,55 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 	// sphere4->setPosition(pos); sphere4->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere4);
 
-	// for(int repeats = 0; repeats < 2; repeats++)
-	// {
-	// 	for (int a = -11; a < 11; a++)
-	// 	{
-	// 		for (int b = -11; b < 11; b++)
-	// 		{
-	// 			float matVal = MathUtils::randomFloat();
-	// 			vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (2 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
-	// 			if ((center - vec3(4.0, 0.2f, 0.0f)).length() > 0.9f)
-	// 			{
-	// 				Material materialInstance;
-	//
-	// 				if (matVal < 0.8)
-	// 				{
-	// 					vec3 albedo = 2.0f * VectorUtils::randomFloatVec3();
-	// 					float fuzziness = MathUtils::randomFloat(0.0f, 0.95f);
-	// 					materialInstance = Material::Metallic(albedo, fuzziness, MathUtils::randomInt(0, 3));
-	// 				}
-	// 				else if(matVal < 0.95)
-	// 				{
-	// 					materialInstance = Material::Dielectric(MathUtils::randomFloat(0.5f, 2.5f));
-	// 				}
-	// 				else
-	// 				{
-	// 					vec3 albedo = VectorUtils::randomFloatVec3();
-	// 					materialInstance = Material::DiffuseLight(albedo);
-	// 				}
-	//
-	// 				Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.2f, 0.4f), materialInstance, isProcedural);
-	// 				std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
-	// 				ModelManager::getInstance()->addObject(objectInstance);
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	for (int a = -5; a < 5; a++)
-	// 	{
-	// 		for (int b = -5; b < 5; b++)
-	// 		{
-	// 			vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
-	//
-	// 			//add additional reflective spheres
-	// 			Material materialInstance = Material::Dielectric(1.5f);
-	// 			Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.1f, 0.2f), materialInstance, isProcedural);
-	// 			std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
-	// 			ModelManager::getInstance()->addObject(objectInstance);
-	// 		}
-	// 	}
-	// }
+	for(int repeats = 0; repeats < 2; repeats++)
+	{
+		for (int a = -11; a < 11; a++)
+		{
+			for (int b = -11; b < 11; b++)
+			{
+				float matVal = MathUtils::randomFloat();
+				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (2 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
+				if ((center - vec3(4.0, 0.2f, 0.0f)).length() > 0.9f)
+				{
+					Material materialInstance;
+	
+					if (matVal < 0.8)
+					{
+						vec3 albedo = 2.0f * VectorUtils::randomFloatVec3();
+						float fuzziness = MathUtils::randomFloat(0.0f, 0.95f);
+						materialInstance = Material::Metallic(albedo, fuzziness, MathUtils::randomInt(0, 3));
+					}
+					else if(matVal < 0.95)
+					{
+						materialInstance = Material::Dielectric(MathUtils::randomFloat(0.5f, 2.5f));
+					}
+					else
+					{
+						vec3 albedo = VectorUtils::randomFloatVec3();
+						materialInstance = Material::DiffuseLight(albedo);
+					}
+	
+					Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.2f, 0.4f), materialInstance, isProcedural);
+					std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
+					ModelManager::getInstance()->addObject(objectInstance);
+				}
+			}
+		}
+	
+		for (int a = -5; a < 5; a++)
+		{
+			for (int b = -5; b < 5; b++)
+			{
+				vec3 center(a + 0.9f * MathUtils::randomFloat(), 0.2 + (5 * MathUtils::randomFloat()), b + 0.9 * MathUtils::randomFloat());
+	
+				//add additional reflective spheres
+				Material materialInstance = Material::Dielectric(1.5f);
+				Model modelInstance = Model::CreateSphere(center, MathUtils::randomFloat(0.1f, 0.2f), materialInstance, isProcedural);
+				std::shared_ptr<GameObject> objectInstance = std::make_shared<GameObject>("SmallSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(modelInstance));
+				ModelManager::getInstance()->addObject(objectInstance);
+			}
+		}
+	}
 
 	std::vector<Model> models = ModelManager::getInstance()->getAllObjectModels();
 

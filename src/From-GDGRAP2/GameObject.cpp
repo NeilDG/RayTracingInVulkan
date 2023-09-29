@@ -122,18 +122,14 @@ void GameObject::performModelTransform()
 
 	// this->modelRef->Transform(rotateZOp);
 	this->modelRef->Transform(translateOp);
-	
-
-	
 
 }
 
 void GameObject::performModelScale()
 {
 	mat4 scaleOp = glm::scale(mat4(1), this->scale);
-	this->scale = VectorUtils::ones(); //TODO:: Workaround. Reset to identity
+	this->scale = VectorUtils::ones(); //TODO: Workaround. Reset to identity
 
 	this->modelRef->Transform(scaleOp);
-	this->objectMatrix = scaleOp;
 	EventBroadcaster::getInstance()->broadcastEvent(EventNames::ON_MARK_SCENE_DIRTY);
 }

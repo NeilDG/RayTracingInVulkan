@@ -51,7 +51,6 @@ private:
 	bool enabled;
 
 	typedef glm::mat4 mat4;
-	mat4 objectMatrix = mat4(1);
 	vec3 origin = VectorUtils::zeros();
 	vec3 originScale = VectorUtils::ones();
 

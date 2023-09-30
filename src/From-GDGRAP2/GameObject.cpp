@@ -116,7 +116,7 @@ void GameObject::performModelTransform()
 	mat4 translateOp = glm::translate(mat4(1), this->transform - this->origin);
 	this->origin = this->transform;
 	this->modelRef->Transform(translateOp);
-
+	EventBroadcaster::getInstance()->broadcastEvent(EventNames::ON_MARK_SCENE_DIRTY);
 }
 
 void GameObject::performModelRotate()
@@ -133,6 +133,7 @@ void GameObject::performModelRotate()
 	this->modelRef->Transform(rotateZOp);
 
 	this->originRot = this->rotAngles;
+	EventBroadcaster::getInstance()->broadcastEvent(EventNames::ON_MARK_SCENE_DIRTY);
 }
 
 void GameObject::performModelScale()

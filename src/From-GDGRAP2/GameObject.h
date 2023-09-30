@@ -5,9 +5,11 @@
 #include "Assets/Model.hpp"
 #include "From-GDGRAP2/VectorUtils.h"
 
-class GameObject final
+class GameObject
 {
 public:
+	~GameObject() = default;
+
 	enum PrimitiveType {
 		CAMERA,
 		CUBE,
@@ -45,7 +47,7 @@ public:
 
 	std::shared_ptr<Assets::Model> getModel();
 
-private:
+protected:
 	String name;
 	PrimitiveType type;
 	bool enabled;
@@ -60,9 +62,9 @@ private:
 
 	std::shared_ptr<Assets::Model> modelRef;
 
-	void performModelTransform();
-	void performModelRotate();
-	void performModelScale();
+	virtual void performModelTransform();
+	virtual void performModelRotate();
+	virtual void performModelScale();
 
 	friend class ModelManager;
  };

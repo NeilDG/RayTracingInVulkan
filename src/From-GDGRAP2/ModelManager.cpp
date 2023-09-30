@@ -31,9 +31,20 @@ std::shared_ptr<GameObject> ModelManager::findObjectByName(String name)
 	}
 }
 
-ModelManager::List ModelManager::getAllObjects()
+ModelManager::List ModelManager::getAllObjects() const
 {
-	return this->gameObjectList;
+	ModelManager::List objectList;
+	for(int i = 0; i < this->gameObjectList.size(); i++)
+	{
+		objectList.push_back(this->gameObjectList[i]);
+	}
+
+	for (int i = 0; i < this->objectGroupList.size(); i++)
+	{
+		objectList.push_back(this->objectGroupList[i]);
+	}
+
+	return objectList;
 }
 
 /**
@@ -45,7 +56,16 @@ ModelManager::ModelList ModelManager::getAllObjectModels() const
 	ModelList models;
 	for(int i = 0; i < this->gameObjectList.size(); i++)
 	{
+
 		models.push_back(*this->gameObjectList[i]->getModel());
+	}
+
+	for(int i = 0; i < this->objectGroupList.size(); i++)
+	{
+		for(int j = 0; j < this->objectGroupList[i]->getSize(); j++)
+		{
+			models.push_back(*this->objectGroupList[i]->getModelAt(j));
+		}
 	}
 
 	return models;
@@ -78,6 +98,25 @@ void ModelManager::addObject(std::shared_ptr<GameObject> gameObject)
 	}
 	this->gameObjectList.push_back(gameObject);
 	std::cout << "Added game object in manager: " + gameObject->getName() << std::endl;
+}
+
+void ModelManager::addObject(std::shared_ptr<ObjectGroup> objectGroup)
+{
+	if (this->gameObjectMap[objectGroup->getName()] != nullptr) {
+		int count = 1;
+		String revisedString = objectGroup->getName() + " " + "(" + std::to_string(count) + ")";
+		while (this->gameObjectMap[revisedString] != nullptr) {
+			count++;
+			revisedString = objectGroup->getName() + " " + "(" + std::to_string(count) + ")";
+		}
+		objectGroup->name = revisedString;
+		this->gameObjectMap[revisedString] = objectGroup;
+	}
+	else {
+		this->gameObjectMap[objectGroup->getName()] = objectGroup;
+	}
+	this->objectGroupList.push_back(objectGroup);
+	std::cout << "Added object group in manager: " + objectGroup->getName() << std::endl;
 }
 
 void ModelManager::createObject(GameObject::PrimitiveType type)
@@ -136,4 +175,5 @@ void ModelManager::clearAllObjects()
 {
 	this->gameObjectList.clear();
 	this->gameObjectMap.clear();
+	this->objectGroupList.clear();
 }

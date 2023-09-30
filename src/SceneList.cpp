@@ -5,8 +5,10 @@
 #include <functional>
 #include <random>
 
+#include "Assets/Sphere.hpp"
 #include "From-GDGRAP2/GameObject.h"
 #include "From-GDGRAP2/MathUtils.h"
+#include "From-GDGRAP2/ObjectGroup.h"
 #include "From-GDGRAP2/ModelManager.h"
 #include "From-GDGRAP2/VectorUtils.h"
 
@@ -74,7 +76,8 @@ const std::vector<std::pair<std::string, std::function<SceneAssets (SceneList::C
 	{"Cornell Box", CornellBox},
 	{"Cornell Box & Lucy", CornellBoxLucy},
 	{"GDGRAP2 - Sphere World", GDGRAP2_SphereWorld},
-	{"GRGRAP2 - Cornell Box", GDGRAP2_CornellBox}
+	{"GRGRAP2 - Cornell Box", GDGRAP2_CornellBox},
+	{"GDGRAP2 - Box World", GDGRAP2_BoxWorld}
 };
 
 SceneAssets SceneList::CubeAndSpheres(CameraInitialState& camera)
@@ -411,7 +414,96 @@ SceneAssets SceneList::GDGRAP2_CornellBox(CameraInitialState& camera)
 	ModelManager::getInstance()->addObject(cornellBoxObject);
 
 	std::vector<Model> models = ModelManager::getInstance()->getAllObjectModels();
+	std::vector<Texture> textures = AssembleTextureList();
+	return std::forward_as_tuple(std::move(models), std::move(textures));
+}
 
+SceneAssets SceneList::GDGRAP2_BoxWorld(CameraInitialState& camera)
+{
+	camera.ModelView = lookAt(vec3(478, 278,-600), vec3(278, 278, 0), vec3(0, 1, 0));
+	camera.FieldOfView = 40;
+	camera.Aperture = 0.0f;
+	camera.FocusDistance = 10.0f;
+	camera.ControlSpeed = 500.0f;
+	camera.GammaCorrection = true;
+	camera.HasSky = false;
+
+	Material areaLight = Material::DiffuseLight(vec3(0.73, 0.73, 0.73) * 7.0f);
+	Model areaLightModel = Model::CreateBox(vec3(0, 0, 0), vec3(1000, 10, 1000), areaLight);
+	std::shared_ptr<GameObject> areaLightObject = std::make_shared<GameObject>("AreaLight", GameObject::PrimitiveType::CUBE, std::make_shared<Model>(areaLightModel));
+	areaLightObject->setPosition(-250.0f, 600.0f, -500.0f);
+	ModelManager::getInstance()->addObject(areaLightObject);
+
+	const int boxesPerSide = 20;
+	for (int i = 0; i < boxesPerSide; i++)
+	{
+		for (int j = 0; j < boxesPerSide; j++)
+		{
+			float w = 100.0;
+			float x0 = -1000.0 + i * w;
+			float z0 = -1000.0 + j * w;
+			float y0 = 0.0;
+			float x1 = x0 + w;
+			float y1 = MathUtils::randomFloat(1, 201);
+			float z1 = z0 + w;
+
+			Material groundMat = Material::Metallic(VectorUtils::randomFloatVec3(), MathUtils::randomFloat(0.0, 0.25f));
+			Model box = Model::CreateBox(vec3(x0, y0, z0), vec3(x1, y1, z1), groundMat);
+			std::shared_ptr<GameObject> boxGround = std::make_shared<GameObject>("GroundBox", GameObject::PrimitiveType::CUBE, std::make_shared<Model>(box));
+
+			ModelManager::getInstance()->addObject(boxGround);
+
+			if (j % 8 == 0)
+			{
+				vec3 randomPt = vec3(x0 + MathUtils::randomFloat(-x0, x0), y0 + MathUtils::randomFloat(250.0f, 350.0f), z0);
+				Material groundReflectMat = Material::Dielectric(1.5f);
+				Material groundMetalMat = Material::Metallic(VectorUtils::randomFloatVec3(), MathUtils::randomFloat(0.0f, 0.4f));
+
+				if (i % 2 == 0)
+				{
+					Model sphere4Model = Model::CreateSphere(randomPt, 20.0f, groundMetalMat, false);
+					std::shared_ptr<GameObject> sphere = std::make_shared<GameObject>("MetalSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere4Model));
+					ModelManager::getInstance()->addObject(sphere);
+				}
+				else
+				{
+					Model sphere4Model = Model::CreateSphere(randomPt, 45.0f, groundReflectMat, false);
+					std::shared_ptr<GameObject> sphere = std::make_shared<GameObject>("ReflectedSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere4Model));
+					ModelManager::getInstance()->addObject(sphere);
+				}
+
+			}
+		}
+	}
+
+	Material diffuseCheckerMat = Material::Lambertian(vec3(1), 3);
+	Model textureSphere = Model::CreateSphere(vec3(-280, 280, 300), 160, diffuseCheckerMat, false);
+	std::shared_ptr<GameObject> sphere = std::make_shared<GameObject>("CheckerSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(textureSphere));
+	ModelManager::getInstance()->addObject(sphere);
+
+	Material earthMat = Material::Lambertian(vec3(1), 4);
+	Model earthModel = Model::CreateSphere(vec3(400, 400, 400), 200, earthMat, false);
+	std::shared_ptr<GameObject> earthObj = std::make_shared<GameObject>("EarthSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(earthModel));
+	ModelManager::getInstance()->addObject(earthObj);
+
+	Material metalMat = Material::Metallic(VectorUtils::randomFloatVec3(), 0.15f);
+	Model metalModel = Model::CreateSphere(vec3(0, 450, 145), 50, metalMat, false);
+	std::shared_ptr<GameObject> metalObj = std::make_shared<GameObject>("MetalSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(metalModel));
+	ModelManager::getInstance()->addObject(metalObj);
+
+	std::shared_ptr<ObjectGroup> sphereGroup = std::make_shared<ObjectGroup>("SphereGroup");
+	for(int i = 0; i < 1000; i++)
+	{
+		Material metalMat = Material::Metallic(vec3(0.73, 0.73, 0.73), MathUtils::randomFloat(0.0f, 0.5f));
+		Model sphereInstance = Model::CreateSphere(VectorUtils::randomFloatVec3(0, 165), 10.0f, metalMat, false);
+		sphereGroup->addModel(std::make_shared<Model>(sphereInstance));
+	}
+
+	sphereGroup->setRotAngles(0, -45, 0);
+	sphereGroup->setPosition(vec3(-200, 300, 450));
+	ModelManager::getInstance()->addObject(sphereGroup);
+
+	std::vector<Model> models = ModelManager::getInstance()->getAllObjectModels();
 	std::vector<Texture> textures = AssembleTextureList();
 	return std::forward_as_tuple(std::move(models), std::move(textures));
 }
@@ -422,6 +514,8 @@ std::vector<Assets::Texture> SceneList::AssembleTextureList()
 	textures.push_back(Texture::LoadTexture("../assets/textures/2k_mars.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/2k_moon.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/land_ocean_ice_cloud_2048.png", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/textures/checker.jpg", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/textures/earthmap.jpg", Vulkan::SamplerConfig()));
 
 	return textures;
 }

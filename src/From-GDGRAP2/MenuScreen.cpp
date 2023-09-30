@@ -134,10 +134,10 @@ void MenuScreen::OnLoadSphereWorld()
 
 void MenuScreen::OnLoadBoxWorld()
 {
-	// GameObjectManager::getInstance()->clearAll();
-	// RayTracingProper::getInstance()->generateBoxWorld();
-	//
-	// RayTracingProper::getInstance()->renderSceneFromHierarchy();
+	ModelManager::getInstance()->clearAllObjects();
+	std::shared_ptr<Parameters> parameters = std::make_shared<Parameters>(EventNames::ON_SCENE_LOADED);
+	parameters->encodeInt("SCENE_INDEX", 8);
+	EventBroadcaster::getInstance()->broadcastEventWithParams(EventNames::ON_SCENE_LOADED, parameters);
 }
 
 void MenuScreen::OnLoadCornellBox()

@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "ObjectGroup.h"
 #include "Assets/Texture.hpp"
 #include "From-GDGRAP2/GameObject.h"
 
@@ -17,6 +18,9 @@ public:
 	typedef std::string String;
 	typedef std::vector<std::shared_ptr<GameObject>> List;
 	typedef std::unordered_map<String, std::shared_ptr<GameObject>> HashTable;
+
+	typedef std::vector<std::shared_ptr<ObjectGroup>> ObjectGroupList;
+
 	typedef std::vector<Assets::Model> ModelList;
 
 	static ModelManager* getInstance();
@@ -24,11 +28,12 @@ public:
 	static void destroy();
 
 	std::shared_ptr<GameObject> findObjectByName(String name);
-	List getAllObjects();
+	List getAllObjects() const;
 	
 	int activeObjects() const;
 	std::shared_ptr<GameObject> getLastObject();
 	void addObject(std::shared_ptr<GameObject> gameObject);
+	void addObject(std::shared_ptr<ObjectGroup> objectGroup);
 	void createObject(GameObject::PrimitiveType type);
 	void createObjectFromFile(String name, GameObject::PrimitiveType type, vec3 position, vec3 rotation, vec3 scale);
 	void deleteObject(std::shared_ptr<GameObject> gameObject);
@@ -50,6 +55,7 @@ private:
 
 	HashTable gameObjectMap;
 	List gameObjectList;
+	ObjectGroupList objectGroupList;
 
 	std::shared_ptr<GameObject> selectedObject = nullptr;
 };

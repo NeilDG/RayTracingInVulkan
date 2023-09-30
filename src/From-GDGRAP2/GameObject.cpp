@@ -75,13 +75,13 @@ void GameObject::setPosition(vec3 newPos)
 void GameObject::setRotAngles(float x, float y, float z)
 {
 	this->rotAngles = vec3(x, y, z);
-	this->performModelTransform();
+	this->performModelRotate();
 }
 
 void GameObject::setRotAngles(vec3 newRot)
 {
 	this->rotAngles = newRot;
-	this->performModelTransform();
+	this->performModelRotate();
 }
 
 void GameObject::setScale(float x, float y, float z)
@@ -115,14 +115,24 @@ void GameObject::performModelTransform()
 
 	mat4 translateOp = glm::translate(mat4(1), this->transform - this->origin);
 	this->origin = this->transform;
-
-	// mat4 rotateXOp = glm::rotate(scaleOp, glm::radians(this->rotAngles.x), vec3(1, 0, 0));
-	// mat4 rotateYOp = glm::rotate(rotateXOp, glm::radians(this->rotAngles.y), vec3(0, 1, 0));
-	// mat4 rotateZOp = glm::rotate(rotateYOp, glm::radians(this->rotAngles.z), vec3(0, 0, 1));
-
-	// this->modelRef->Transform(rotateZOp);
 	this->modelRef->Transform(translateOp);
 
+}
+
+void GameObject::performModelRotate()
+{
+	//vertex.Position = transform * vec4(vertex.Position, 1);
+
+	vec3 rotOffset = this->rotAngles - this->originRot;
+	mat4 rotateXOp = glm::rotate(mat4(1), glm::radians(rotOffset.x), vec3(1, 0, 0));
+	mat4 rotateYOp = glm::rotate(mat4(1), glm::radians(rotOffset.y), vec3(0, 1, 0));
+	mat4 rotateZOp = glm::rotate(mat4(1), glm::radians(rotOffset.z), vec3(0, 0, 1));
+
+	this->modelRef->Transform(rotateXOp);
+	this->modelRef->Transform(rotateYOp);
+	this->modelRef->Transform(rotateZOp);
+
+	this->originRot = this->rotAngles;
 }
 
 void GameObject::performModelScale()

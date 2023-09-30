@@ -73,7 +73,8 @@ const std::vector<std::pair<std::string, std::function<SceneAssets (SceneList::C
 	{"Lucy In One Weekend", LucyInOneWeekend},
 	{"Cornell Box", CornellBox},
 	{"Cornell Box & Lucy", CornellBoxLucy},
-	{"GDGRAP2 - Sphere World", GDGRAP2_SphereWorld}
+	{"GDGRAP2 - Sphere World", GDGRAP2_SphereWorld},
+	{"GRGRAP2 - Cornell Box", GDGRAP2_CornellBox}
 };
 
 SceneAssets SceneList::CubeAndSpheres(CameraInitialState& camera)
@@ -302,26 +303,21 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 	vec3 pos = vec3(0, -1000, 0); float center = 1000;
 	Model sphere1Model = Model::CreateSphere(pos, center, Material::Lambertian(vec3(0.5f, 0.5f, 0.5f)), isProcedural);
 	std::shared_ptr<GameObject> sphere1 = std::make_shared<GameObject>("GroundSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere1Model));
-	// sphere1->setPosition(pos); sphere1->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere1);
-	// models.push_back(sphere1Model);
 
 	pos = vec3(0, 1, 0); center = 1.0f;
 	Model sphere2Model = Model::CreateSphere(pos, 1.0f, Material::Dielectric(1.5f), isProcedural);
 	std::shared_ptr<GameObject> sphere2 = std::make_shared<GameObject>("CenterSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere2Model));
-	// sphere2->setPosition(pos); sphere2->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere2);
 
 	pos = vec3(-8, 2.5f, 1); center = 2.5f;
 	Model sphere3Model = Model::CreateSphere(pos, 2.5f, Material::Metallic(vec3(0.4f, 0.2f, 0.1f), MathUtils::randomFloat(0.0f, 0.2f)), isProcedural);
 	std::shared_ptr<GameObject> sphere3 = std::make_shared<GameObject>("LeftSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere3Model));
-	// sphere3->setPosition(pos); sphere3->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere3);
 
 	pos = vec3(4, 1, 0); center = 1.0f;
 	Model sphere4Model = Model::CreateSphere(pos, 1.0f, Material::Metallic(vec3(0.7f, 0.6f, 0.5f), 0.0f), isProcedural);
 	std::shared_ptr<GameObject> sphere4 = std::make_shared<GameObject>("RightSphere", GameObject::PrimitiveType::SPHERE, std::make_shared<Model>(sphere4Model));
-	// sphere4->setPosition(pos); sphere4->setScale(vec3(center, center, center));
 	ModelManager::getInstance()->addObject(sphere4);
 
 	for(int repeats = 0; repeats < 2; repeats++)
@@ -373,6 +369,46 @@ SceneAssets SceneList::GDGRAP2_SphereWorld(CameraInitialState& camera)
 			}
 		}
 	}
+
+	std::vector<Model> models = ModelManager::getInstance()->getAllObjectModels();
+
+	std::vector<Texture> textures = AssembleTextureList();
+	return std::forward_as_tuple(std::move(models), std::move(textures));
+}
+
+SceneAssets SceneList::GDGRAP2_CornellBox(CameraInitialState& camera)
+{
+	camera.ModelView = lookAt(vec3(278, 278, 800), vec3(278, 278, 0), vec3(0, 1, 0));
+	camera.FieldOfView = 40;
+	camera.Aperture = 0.0f;
+	camera.FocusDistance = 10.0f;
+	camera.ControlSpeed = 500.0f;
+	camera.GammaCorrection = true;
+	camera.HasSky = false;
+
+	std::mt19937 engine(1);
+	std::function<float()> random = std::bind(std::uniform_real_distribution<float>(), engine);
+
+	bool isProcedural = false;
+
+	const auto i = mat4(1);
+	const auto white = Material::Lambertian(vec3(0.73f, 0.73f, 0.73f));
+
+	Model box0 = Model::CreateBox(vec3(0, 0, -165), vec3(165, 165, 0), white);
+	Model box1 = Model::CreateBox(vec3(0, 0, -165), vec3(165, 330, 0), white);
+
+	box0.Transform(rotate(translate(i, vec3(555 - 130 - 165, 0, -65)), radians(-18.0f), vec3(0, 1, 0)));
+	box1.Transform(rotate(translate(i, vec3(555 - 265 - 165, 0, -295)), radians(15.0f), vec3(0, 1, 0)));
+
+	std::shared_ptr<GameObject> box0_Object = std::make_shared<GameObject>("Box", GameObject::PrimitiveType::CUBE, std::make_shared<Model>(box0));
+	ModelManager::getInstance()->addObject(box0_Object);
+
+	std::shared_ptr<GameObject> box1_Object = std::make_shared<GameObject>("Box", GameObject::PrimitiveType::CUBE, std::make_shared<Model>(box1));
+	ModelManager::getInstance()->addObject(box1_Object);
+
+	Model cornellBoxModel = Model::CreateCornellBox(555);
+	std::shared_ptr<GameObject> cornellBoxObject = std::make_shared<GameObject>("CornellBox", GameObject::PrimitiveType::CUBE, std::make_shared<Model>(cornellBoxModel));
+	ModelManager::getInstance()->addObject(cornellBoxObject);
 
 	std::vector<Model> models = ModelManager::getInstance()->getAllObjectModels();
 

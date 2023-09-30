@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "EventBroadcaster.h"
+#include "ModelManager.h"
 
 // #include "GameObjectManager.h"
 
@@ -125,6 +126,7 @@ void MenuScreen::OnLoadSphereWorld()
 	// RayTracingProper::getInstance()->generateSphereWorld();
 	// RayTracingProper::getInstance()->renderSceneFromHierarchy();
 
+	ModelManager::getInstance()->clearAllObjects();
 	std::shared_ptr<Parameters> parameters = std::make_shared<Parameters>(EventNames::ON_SCENE_LOADED);
 	parameters->encodeInt("SCENE_INDEX", 6);
 	EventBroadcaster::getInstance()->broadcastEventWithParams(EventNames::ON_SCENE_LOADED, parameters);
@@ -145,7 +147,8 @@ void MenuScreen::OnLoadCornellBox()
 	//
 	// RayTracingProper::getInstance()->renderSceneFromHierarchy();
 
+	ModelManager::getInstance()->clearAllObjects();
 	std::shared_ptr<Parameters> parameters = std::make_shared<Parameters>(EventNames::ON_SCENE_LOADED);
-	parameters->encodeInt("SCENE_INDEX", 4);
+	parameters->encodeInt("SCENE_INDEX", 7);
 	EventBroadcaster::getInstance()->broadcastEventWithParams(EventNames::ON_SCENE_LOADED, parameters);
 }

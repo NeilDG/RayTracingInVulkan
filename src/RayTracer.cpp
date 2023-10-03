@@ -14,6 +14,7 @@
 #include <sstream>
 
 #include "From-GDGRAP2/Debug.h"
+#include "From-GDGRAP2/GlobalConfig.h"
 #include "From-GDGRAP2/ModelManager.h"
 
 namespace
@@ -293,11 +294,13 @@ void RayTracer::onTriggeredEvent(String eventName, std::shared_ptr<Parameters> p
 	{
 		int sceneIndex = parameters->getIntData("SCENE_INDEX", 0);
 		userSettings_.SceneIndex = sceneIndex;
+		GlobalConfig::getInstance()->encodeBool(ConfigKeys::DO_NOT_RESET_CAMERA, false);
 	}
 	else if(eventName == EventNames::ON_MARK_SCENE_DIRTY)
 	{
 		this->isSceneDirty = true;
-		Debug::Log("Scene marked as dirty! \n");
+		GlobalConfig::getInstance()->encodeBool(ConfigKeys::DO_NOT_RESET_CAMERA, true);
+		// Debug::Log("Scene marked as dirty! \n");
 	}
 }
 
@@ -341,11 +344,11 @@ void RayTracer::ReloadModifiedScene()
 
 	scene_.reset(new Assets::Scene(CommandPool(), std::move(models), std::move(textures)));
 
-	userSettings_.FieldOfView = cameraInitialSate_.FieldOfView;
-	userSettings_.Aperture = cameraInitialSate_.Aperture;
-	userSettings_.FocusDistance = cameraInitialSate_.FocusDistance;
-
-	modelViewController_.Reset(cameraInitialSate_.ModelView);
+	// userSettings_.FieldOfView = cameraInitialSate_.FieldOfView;
+	// userSettings_.Aperture = cameraInitialSate_.Aperture;
+	// userSettings_.FocusDistance = cameraInitialSate_.FocusDistance;
+	//
+	// modelViewController_.Reset(cameraInitialSate_.ModelView);
 
 	periodTotalFrames_ = 0;
 	resetAccumulation_ = true;

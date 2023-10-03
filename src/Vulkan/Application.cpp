@@ -22,6 +22,7 @@
 #include <array>
 #include "From-GDGRAP2/Debug.h"
 #include "From-GDGRAP2/EventBroadcaster.h"
+#include "From-GDGRAP2/GlobalConfig.h"
 #include "From-GDGRAP2/ModelManager.h"
 
 namespace Vulkan {
@@ -40,6 +41,7 @@ Application::Application(const WindowConfig& windowConfig, const VkPresentModeKH
 
 	//initialize libs
 	Debug::initialize();
+	GlobalConfig::initialize();
 	EventBroadcaster::initialize();
 	ModelManager::initialize();
 }
@@ -57,6 +59,7 @@ Application::~Application()
 
 	ModelManager::destroy();
 	EventBroadcaster::destroy();
+	GlobalConfig::destroy();
 	Debug::destroy();
 }
 

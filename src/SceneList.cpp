@@ -7,6 +7,7 @@
 
 #include "Assets/Sphere.hpp"
 #include "From-GDGRAP2/GameObject.h"
+#include "From-GDGRAP2/GlobalConfig.h"
 #include "From-GDGRAP2/MathUtils.h"
 #include "From-GDGRAP2/ObjectGroup.h"
 #include "From-GDGRAP2/ModelManager.h"

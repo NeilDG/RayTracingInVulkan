@@ -130,7 +130,7 @@ void UserInterface::Render(VkCommandBuffer commandBuffer, const Vulkan::FrameBuf
 	ImGui_ImplVulkan_NewFrame();
 	ImGui::NewFrame();
 
-	// DrawSettings();
+	//DrawSettings();
 	// DrawOverlay(statistics);
 	//ImGui::ShowStyleEditor();
 	UIManager::getInstance()->drawAllUI();
@@ -209,22 +209,22 @@ void UserInterface::DrawSettings()
 		ImGui::PopItemWidth();
 		ImGui::NewLine();
 
-		ImGui::Text("Ray Tracing");
-		ImGui::Separator();
-		ImGui::Checkbox("Enable ray tracing", &Settings().IsRayTraced);
-		ImGui::Checkbox("Accumulate rays between frames", &Settings().AccumulateRays);
-		uint32_t min = 1, max = 128;
-		ImGui::SliderScalar("Samples", ImGuiDataType_U32, &Settings().NumberOfSamples, &min, &max);
-		min = 1, max = 32;
-		ImGui::SliderScalar("Bounces", ImGuiDataType_U32, &Settings().NumberOfBounces, &min, &max);
-		ImGui::NewLine();
+		// ImGui::Text("Ray Tracing");
+		// ImGui::Separator();
+		// ImGui::Checkbox("Enable ray tracing", &Settings().IsRayTraced);
+		// ImGui::Checkbox("Accumulate rays between frames", &Settings().AccumulateRays);
+		// uint32_t min = 1, max = 128;
+		// ImGui::SliderScalar("Samples", ImGuiDataType_U32, &Settings().NumberOfSamples, &min, &max);
+		// min = 1, max = 32;
+		// ImGui::SliderScalar("Bounces", ImGuiDataType_U32, &Settings().NumberOfBounces, &min, &max);
+		// ImGui::NewLine();
 
-		ImGui::Text("Camera");
-		ImGui::Separator();
-		ImGui::SliderFloat("FoV", &Settings().FieldOfView, UserSettings::FieldOfViewMinValue, UserSettings::FieldOfViewMaxValue, "%.0f");
-		ImGui::SliderFloat("Aperture", &Settings().Aperture, 0.0f, 1.0f, "%.2f");
-		ImGui::SliderFloat("Focus", &Settings().FocusDistance, 0.1f, 20.0f, "%.1f");
-		ImGui::NewLine();
+		// ImGui::Text("Camera");
+		// ImGui::Separator();
+		// ImGui::SliderFloat("FoV", &Settings().FieldOfView, UserSettings::FieldOfViewMinValue, UserSettings::FieldOfViewMaxValue, "%.0f");
+		// ImGui::SliderFloat("Aperture", &Settings().Aperture, 0.0f, 1.0f, "%.2f");
+		// ImGui::SliderFloat("Focus", &Settings().FocusDistance, 0.1f, 20.0f, "%.1f");
+		// ImGui::NewLine();
 
 		ImGui::Text("Profiler");
 		ImGui::Separator();

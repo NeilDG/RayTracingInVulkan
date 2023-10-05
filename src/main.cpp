@@ -99,10 +99,14 @@ namespace
 		
 		userSettings.SceneIndex = options.SceneIndex;
 
-		userSettings.IsRayTraced = true;
+		// userSettings.IsRayTraced = true;
+		RayTracingSettings::initialize();
+		RayTracingSettings::getInstance()->setRT(true);
 		userSettings.AccumulateRays = true;
-		userSettings.NumberOfSamples = options.Samples;
-		userSettings.NumberOfBounces = options.Bounces;
+		// userSettings.NumberOfSamples = options.Samples;
+		// userSettings.NumberOfBounces = options.Bounces;
+		RayTracingSettings::getInstance()->setNumberOfSamples(options.Samples);
+		RayTracingSettings::getInstance()->setNumberOfBounces(options.Bounces);
 		userSettings.MaxNumberOfSamples = options.MaxSamples;
 
 		userSettings.ShowSettings = !options.Benchmark;

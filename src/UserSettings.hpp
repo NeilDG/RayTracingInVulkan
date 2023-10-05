@@ -1,4 +1,6 @@
 #pragma once
+#include "From-GDGRAP2/SceneCamera.h"
+#include "From-GDGRAP2/RayTracingSettings.h"
 
 struct UserSettings final
 {
@@ -13,16 +15,16 @@ struct UserSettings final
 	int SceneIndex;
 
 	// Renderer
-	bool IsRayTraced;
+	// bool IsRayTraced;
 	bool AccumulateRays;
-	uint32_t NumberOfSamples;
-	uint32_t NumberOfBounces;
+	// uint32_t NumberOfSamples;
+	// uint32_t NumberOfBounces;
 	uint32_t MaxNumberOfSamples;
 
 	// Camera
-	float FieldOfView;
-	float Aperture;
-	float FocusDistance;
+	// float FieldOfView;
+	// float Aperture;
+	// float FocusDistance;
 
 	// Profiler
 	bool ShowHeatmap;
@@ -38,11 +40,13 @@ struct UserSettings final
 	bool RequiresAccumulationReset(const UserSettings& prev) const
 	{
 		return
-			IsRayTraced != prev.IsRayTraced ||
+			// IsRayTraced != prev.IsRayTraced ||
 			AccumulateRays != prev.AccumulateRays ||
-			NumberOfBounces != prev.NumberOfBounces ||
-			FieldOfView != prev.FieldOfView ||
-			Aperture != prev.Aperture ||
-			FocusDistance != prev.FocusDistance;
+			// NumberOfBounces != prev.NumberOfBounces ||
+			RayTracingSettings::getInstance()->requiresResetAccumulation() ||
+			SceneCamera::getInstance()->requiresResetAccumulation();
+			// FieldOfView != prev.FieldOfView ||
+			// Aperture != prev.Aperture ||
+			// FocusDistance != prev.FocusDistance;
 	}
 };

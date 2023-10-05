@@ -16,6 +16,8 @@
 #include "From-GDGRAP2/Debug.h"
 #include "From-GDGRAP2/GlobalConfig.h"
 #include "From-GDGRAP2/ModelManager.h"
+#include "From-GDGRAP2/RayTracingSettings.h"
+#include "From-GDGRAP2/SceneCamera.h"
 
 namespace
 {
@@ -50,15 +52,20 @@ Assets::UniformBufferObject RayTracer::GetUniformBufferObject(const VkExtent2D e
 
 	Assets::UniformBufferObject ubo = {};
 	ubo.ModelView = modelViewController_.ModelView();
-	ubo.Projection = glm::perspective(glm::radians(userSettings_.FieldOfView), extent.width / static_cast<float>(extent.height), 0.1f, 10000.0f);
+	// ubo.Projection = glm::perspective(glm::radians(userSettings_.FieldOfView), extent.width / static_cast<float>(extent.height), 0.1f, 10000.0f);
+	ubo.Projection = glm::perspective(glm::radians(SceneCamera::getInstance()->getFieldOfView()), extent.width / static_cast<float>(extent.height), 0.1f, 10000.0f);
 	ubo.Projection[1][1] *= -1; // Inverting Y for Vulkan, https://matthewwellings.com/blog/the-new-vulkan-coordinate-system/
 	ubo.ModelViewInverse = glm::inverse(ubo.ModelView);
 	ubo.ProjectionInverse = glm::inverse(ubo.Projection);
-	ubo.Aperture = userSettings_.Aperture;
-	ubo.FocusDistance = userSettings_.FocusDistance;
+	// ubo.Aperture = userSettings_.Aperture;
+	// ubo.FocusDistance = userSettings_.FocusDistance;
+	ubo.Aperture = SceneCamera::getInstance()->getAperture();
+	ubo.FocusDistance = SceneCamera::getInstance()->getFocusDistance();
 	ubo.TotalNumberOfSamples = totalNumberOfSamples_;
-	ubo.NumberOfSamples = numberOfSamples_;
-	ubo.NumberOfBounces = userSettings_.NumberOfBounces;
+	// ubo.NumberOfSamples = numberOfSamples_;
+	ubo.NumberOfSamples = RayTracingSettings::getInstance()->getNumberOfSamples();
+	// ubo.NumberOfBounces = userSettings_.NumberOfBounces;
+	ubo.NumberOfBounces = RayTracingSettings::getInstance()->getNumberOfBounces();
 	ubo.RandomSeed = 1;
 	ubo.HasSky = init.HasSky;
 	ubo.ShowHeatmap = userSettings_.ShowHeatmap;
@@ -156,7 +163,9 @@ void RayTracer::DrawFrame()
 	previousSettings_ = userSettings_;
 
 	// Keep track of our sample count.
-	numberOfSamples_ = glm::clamp(userSettings_.MaxNumberOfSamples - totalNumberOfSamples_, 0u, userSettings_.NumberOfSamples);
+	// numberOfSamples_ = glm::clamp(userSettings_.MaxNumberOfSamples - totalNumberOfSamples_, 0u, userSettings_.NumberOfSamples);
+	float numSamples;
+	numberOfSamples_ = glm::clamp(userSettings_.MaxNumberOfSamples - totalNumberOfSamples_, 0u, (uint32_t) RayTracingSettings::getInstance()->getNumberOfSamples());
 	totalNumberOfSamples_ += numberOfSamples_;
 
 	Application::DrawFrame();
@@ -176,7 +185,7 @@ void RayTracer::Render(VkCommandBuffer commandBuffer, const uint32_t imageIndex)
 	CheckAndUpdateBenchmarkState(prevTime);
 
 	// Render the scene
-	userSettings_.IsRayTraced
+	RayTracingSettings::getInstance()->isRTEnabled()
 		? Vulkan::RayTracing::Application::Render(commandBuffer, imageIndex)
 		: Vulkan::Application::Render(commandBuffer, imageIndex);
 
@@ -185,7 +194,7 @@ void RayTracer::Render(VkCommandBuffer commandBuffer, const uint32_t imageIndex)
 	stats.FramebufferSize = Window().FramebufferSize();
 	stats.FrameRate = static_cast<float>(1 / timeDelta);
 
-	if (userSettings_.IsRayTraced)
+	if (RayTracingSettings::getInstance()->isRTEnabled())
 	{
 		const auto extent = SwapChain().Extent();
 
@@ -221,7 +230,8 @@ void RayTracer::OnKey(int key, int scancode, int action, int mods)
 			{
 			case GLFW_KEY_F1: userSettings_.ShowSettings = !userSettings_.ShowSettings; break;
 			case GLFW_KEY_F2: userSettings_.ShowOverlay = !userSettings_.ShowOverlay; break;
-			case GLFW_KEY_R: userSettings_.IsRayTraced = !userSettings_.IsRayTraced; break;
+			// case GLFW_KEY_R: userSettings_.IsRayTraced = !userSettings_.IsRayTraced; break;
+			case GLFW_KEY_R: RayTracingSettings::getInstance()->setRT(!RayTracingSettings::getInstance()->isRTEnabled()); break;
 			case GLFW_KEY_H: userSettings_.ShowHeatmap = !userSettings_.ShowHeatmap; break;
 			case GLFW_KEY_P: isWireFrame_ = !isWireFrame_; break;
 			default: break;
@@ -272,13 +282,21 @@ void RayTracer::OnScroll(const double xoffset, const double yoffset)
 		return;
 	}
 
-	const auto prevFov = userSettings_.FieldOfView;
-	userSettings_.FieldOfView = std::clamp(
+	// const auto prevFov = userSettings_.FieldOfView;
+	// userSettings_.FieldOfView = std::clamp(
+	// 	static_cast<float>(prevFov - yoffset),
+	// 	UserSettings::FieldOfViewMinValue,
+	// 	UserSettings::FieldOfViewMaxValue);
+	//
+	// resetAccumulation_ = prevFov != userSettings_.FieldOfView;
+	const auto prevFov = SceneCamera::getInstance()->getFieldOfView();
+	float fieldOfView = std::clamp(
 		static_cast<float>(prevFov - yoffset),
 		UserSettings::FieldOfViewMinValue,
 		UserSettings::FieldOfViewMaxValue);
+	SceneCamera::getInstance()->setFieldOfView(fieldOfView);
 
-	resetAccumulation_ = prevFov != userSettings_.FieldOfView;
+	resetAccumulation_ = prevFov != SceneCamera::getInstance()->getFieldOfView();
 }
 
 void RayTracer::onTriggeredEvent(String eventName, std::shared_ptr<Parameters> parameters)
@@ -317,9 +335,10 @@ void RayTracer::LoadScene(const uint32_t sceneIndex)
 	scene_.reset(new Assets::Scene(CommandPool(), std::move(models), std::move(textures)));
 	sceneIndex_ = sceneIndex;
 
-	userSettings_.FieldOfView = cameraInitialSate_.FieldOfView;
-	userSettings_.Aperture = cameraInitialSate_.Aperture;
-	userSettings_.FocusDistance = cameraInitialSate_.FocusDistance;
+	SceneCamera::getInstance()->setAll(cameraInitialSate_.FieldOfView, cameraInitialSate_.Aperture, cameraInitialSate_.FocusDistance);
+	// userSettings_.FieldOfView = cameraInitialSate_.FieldOfView;
+	// userSettings_.Aperture = cameraInitialSate_.Aperture;
+	// userSettings_.FocusDistance = cameraInitialSate_.FocusDistance;
 
 	modelViewController_.Reset(cameraInitialSate_.ModelView);
 

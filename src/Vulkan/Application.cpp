@@ -24,6 +24,8 @@
 #include "From-GDGRAP2/EventBroadcaster.h"
 #include "From-GDGRAP2/GlobalConfig.h"
 #include "From-GDGRAP2/ModelManager.h"
+#include "From-GDGRAP2/RayTracingSettings.h"
+#include "From-GDGRAP2/SceneCamera.h"
 
 namespace Vulkan {
 
@@ -44,6 +46,7 @@ Application::Application(const WindowConfig& windowConfig, const VkPresentModeKH
 	GlobalConfig::initialize();
 	EventBroadcaster::initialize();
 	ModelManager::initialize();
+	SceneCamera::initialize();
 }
 
 Application::~Application()
@@ -57,6 +60,8 @@ Application::~Application()
 	instance_.reset();
 	window_.reset();
 
+	RayTracingSettings::destroy();
+	SceneCamera::destroy();
 	ModelManager::destroy();
 	EventBroadcaster::destroy();
 	GlobalConfig::destroy();

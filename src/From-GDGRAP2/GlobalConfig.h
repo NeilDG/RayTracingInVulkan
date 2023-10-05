@@ -33,7 +33,7 @@ private:
 	GlobalConfig();
 	~GlobalConfig() = default;
 	GlobalConfig(GlobalConfig const&) {}; // copy constructor is private
-	GlobalConfig& operator=(EventBroadcaster const&) {}; // assignment operator is private*/
+	GlobalConfig& operator=(GlobalConfig const&) {}; // assignment operator is private*/
 	static GlobalConfig* sharedInstance;
 
 

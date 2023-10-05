@@ -154,6 +154,12 @@ set(src_files_from_gdgrap2
 	From-GDGRAP2/EventBroadcaster.h
 	From-GDGRAP2/MathUtils.cpp
 	From-GDGRAP2/MathUtils.h
+	From-GDGRAP2/GlobalConfig.cpp
+	From-GDGRAP2/GlobalConfig.h
+	From-GDGRAP2/ObjectGroup.cpp
+	From-GDGRAP2/ObjectGroup.h
+	From-GDGRAP2/ModelManager.cpp
+	From-GDGRAP2/ModelManager.h
 	From-GDGRAP2/EventNames.h
 	From-GDGRAP2/RTConfig.h
 )

@@ -3,6 +3,7 @@
 #include "Utilities/Exception.hpp"
 #include <boost/program_options.hpp>
 #include <iostream>
+#include "From-GDGRAP2/RTConfig.h"
 
 using namespace boost::program_options;
 
@@ -25,7 +26,7 @@ Options::Options(const int argc, const char* argv[])
 
 	options_description scene("Scene options", lineLength);
 	scene.add_options()
-		("scene", value<uint32_t>(&SceneIndex)->default_value(1), "The scene to start with.")
+		("scene", value<uint32_t>(&SceneIndex)->default_value(8), "The scene to start with.")
 		;
 
 	options_description vulkan("Vulkan options", lineLength);
@@ -35,8 +36,8 @@ Options::Options(const int argc, const char* argv[])
 
 	options_description window("Window options", lineLength);
 	window.add_options()
-		("width", value<uint32_t>(&Width)->default_value(1280), "The framebuffer width.")
-		("height", value<uint32_t>(&Height)->default_value(720), "The framebuffer height.")
+		("width", value<uint32_t>(&Width)->default_value(ApplicationConfig::APP_WINDOW_WIDTH), "The framebuffer width.")
+		("height", value<uint32_t>(&Height)->default_value(ApplicationConfig::APP_WINDOW_HEIGHT), "The framebuffer height.")
 		("present-mode", value<uint32_t>(&PresentMode)->default_value(2), "The present mode (0 = Immediate, 1 = MailBox, 2 = FIFO, 3 = FIFORelaxed).")
 		("fullscreen", bool_switch(&Fullscreen)->default_value(false), "Toggle fullscreen vs windowed (default: windowed).")
 		;

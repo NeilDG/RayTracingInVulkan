@@ -12,7 +12,7 @@ vcpkg.exe install ^
 	freetype:x64-windows-static ^
 	glfw3:x64-windows-static ^
 	glm:x64-windows-static ^
-	imgui:x64-windows-static ^
+	imgui[docking-experimental]:x64-windows-static ^
 	stb:x64-windows-static ^
 	tinyobjloader:x64-windows-static ^
 	|| goto :error

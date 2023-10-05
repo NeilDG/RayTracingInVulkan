@@ -76,7 +76,9 @@ Window::Window(const WindowConfig& config) :
 	}
 
 	GLFWimage icon;
-	icon.pixels = stbi_load("../assets/textures/Vulkan.png", &icon.width, &icon.height, nullptr, 4);
+	// icon.pixels = stbi_load("../assets/textures/gamelab_logo.png", &icon.width, &icon.height, nullptr, 4);
+	icon.pixels = stbi_load("../assets/textures/gamelab_logo.png", &icon.width, &icon.height, nullptr, 4); //assuming the icon was included during CMake-Build of assets folder
+	// icon.pixels = stbi_load("X:/GithubProjects/RayTracingInVulkan/assets/textures/gamelab_logo.png", &icon.width, &icon.height, nullptr, 4); //hardcore path for icon as last resort
 	if (icon.pixels == nullptr)
 	{
 		Throw(std::runtime_error("failed to load icon"));

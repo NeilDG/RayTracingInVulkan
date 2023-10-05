@@ -4,8 +4,9 @@
 #include "SceneList.hpp"
 #include "UserSettings.hpp"
 #include "Vulkan/RayTracing/Application.hpp"
+#include "From-GDGRAP2/EventBroadcaster.h"
 
-class RayTracer final : public Vulkan::RayTracing::Application
+class RayTracer final : public Vulkan::RayTracing::Application, public Observer
 {
 public:
 
@@ -36,16 +37,19 @@ protected:
 	void OnMouseButton(int button, int action, int mods) override;
 	void OnScroll(double xoffset, double yoffset) override;
 
+	void onTriggeredEvent(String eventName, std::shared_ptr<Parameters> parameters) override;
+
 private:
 
 	void LoadScene(uint32_t sceneIndex);
+	void ReloadModifiedScene();
 	void CheckAndUpdateBenchmarkState(double prevTime);
 	void CheckFramebufferSize() const;
 
 	uint32_t sceneIndex_{};
 	UserSettings userSettings_{};
 	UserSettings previousSettings_{};
-	SceneList::CameraInitialSate cameraInitialSate_{};
+	SceneList::CameraInitialState cameraInitialSate_{};
 	ModelViewController modelViewController_{};
 
 	std::unique_ptr<const Assets::Scene> scene_;
@@ -61,4 +65,6 @@ private:
 	double sceneInitialTime_{};
 	double periodInitialTime_{};
 	uint32_t periodTotalFrames_{};
+
+	bool isSceneDirty = false;
 };

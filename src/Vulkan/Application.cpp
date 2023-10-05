@@ -20,6 +20,10 @@
 #include "Assets/UniformBuffer.hpp"
 #include "Utilities/Exception.hpp"
 #include <array>
+#include "From-GDGRAP2/Debug.h"
+#include "From-GDGRAP2/EventBroadcaster.h"
+#include "From-GDGRAP2/GlobalConfig.h"
+#include "From-GDGRAP2/ModelManager.h"
 
 namespace Vulkan {
 
@@ -34,6 +38,12 @@ Application::Application(const WindowConfig& windowConfig, const VkPresentModeKH
 	instance_.reset(new Instance(*window_, validationLayers, VK_API_VERSION_1_2));
 	debugUtilsMessenger_.reset(enableValidationLayers ? new DebugUtilsMessenger(*instance_, VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) : nullptr);
 	surface_.reset(new Surface(*instance_));
+
+	//initialize libs
+	Debug::initialize();
+	GlobalConfig::initialize();
+	EventBroadcaster::initialize();
+	ModelManager::initialize();
 }
 
 Application::~Application()
@@ -46,6 +56,11 @@ Application::~Application()
 	debugUtilsMessenger_.reset();
 	instance_.reset();
 	window_.reset();
+
+	ModelManager::destroy();
+	EventBroadcaster::destroy();
+	GlobalConfig::destroy();
+	Debug::destroy();
 }
 
 const std::vector<VkExtensionProperties>& Application::Extensions() const
@@ -239,7 +254,7 @@ void Application::DrawFrame()
 void Application::Render(VkCommandBuffer commandBuffer, const uint32_t imageIndex)
 {
 	std::array<VkClearValue, 2> clearValues = {};
-	clearValues[0].color = { {0.0f, 0.0f, 0.0f, 1.0f} };
+	clearValues[0].color = { {0.2f, 0.0f, 0.0f, 1.0f} };
 	clearValues[1].depthStencil = { 1.0f, 0 };
 
 	VkRenderPassBeginInfo renderPassInfo = {};

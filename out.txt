@@ -1,0 +1,297 @@
+
+C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan>mkdir build 
+
+C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan>cd build   || goto :error 
+
+C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build>git clone https://github.com/Microsoft/vcpkg.git vcpkg.windows   || goto :error 
+
+C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build>cd vcpkg.windows   || goto :error 
+
+C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build\vcpkg.windows>git checkout 2023.04.15   || goto :error 
+
+C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build\vcpkg.windows>call bootstrap-vcpkg.bat   || goto :error 
+Downloading https://github.com/microsoft/vcpkg-tool/releases/download/2023-04-07/vcpkg.exe -> C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build\vcpkg.windows\vcpkg.exe... done.
+Validating signature... done.
+
+Telemetry
+---------
+vcpkg collects usage data in order to help us improve your experience.
+The data collected by Microsoft is anonymous.
+You can opt-out of telemetry by re-running the bootstrap-vcpkg script with -disableMetrics,
+passing --disable-metrics to vcpkg on the command line,
+or by setting the VCPKG_DISABLE_METRICS environment variable.
+
+Read more about vcpkg telemetry at docs/about/privacy.md
+Computing installation plan...
+The following packages will be built and installed:
+  * boost-any[core]:x64-windows-static -> 1.82.0#1
+  * boost-array[core]:x64-windows-static -> 1.82.0#1
+  * boost-assert[core]:x64-windows-static -> 1.82.0#1
+  * boost-bind[core]:x64-windows-static -> 1.82.0#1
+  * boost-build[core]:x64-windows -> 1.82.0#1
+  * boost-concept-check[core]:x64-windows-static -> 1.82.0#1
+  * boost-config[core]:x64-windows-static -> 1.82.0#1
+  * boost-container[core]:x64-windows-static -> 1.82.0#1
+  * boost-container-hash[core]:x64-windows-static -> 1.82.0#1
+  * boost-conversion[core]:x64-windows-static -> 1.82.0#1
+  * boost-core[core]:x64-windows-static -> 1.82.0#1
+  * boost-describe[core]:x64-windows-static -> 1.82.0#1
+  * boost-detail[core]:x64-windows-static -> 1.82.0#1
+    boost-exception[core]:x64-windows-static -> 1.82.0#1
+  * boost-function[core]:x64-windows-static -> 1.82.0#1
+  * boost-function-types[core]:x64-windows-static -> 1.82.0#1
+  * boost-functional[core]:x64-windows-static -> 1.82.0#1
+  * boost-fusion[core]:x64-windows-static -> 1.82.0#1
+  * boost-integer[core]:x64-windows-static -> 1.82.0#1
+  * boost-intrusive[core]:x64-windows-static -> 1.82.0#1
+  * boost-io[core]:x64-windows-static -> 1.82.0#1
+  * boost-iterator[core]:x64-windows-static -> 1.82.0#1
+  * boost-lexical-cast[core]:x64-windows-static -> 1.82.0#1
+  * boost-modular-build-helper[core]:x64-windows -> 1.82.0#1
+  * boost-move[core]:x64-windows-static -> 1.82.0#1
+  * boost-mp11[core]:x64-windows-static -> 1.82.0#1
+  * boost-mpl[core]:x64-windows-static -> 1.82.0#1
+  * boost-numeric-conversion[core]:x64-windows-static -> 1.82.0#1
+  * boost-optional[core]:x64-windows-static -> 1.82.0#1
+  * boost-predef[core]:x64-windows-static -> 1.82.0#1
+  * boost-preprocessor[core]:x64-windows-static -> 1.82.0#1
+    boost-program-options[core]:x64-windows-static -> 1.82.0#1
+  * boost-range[core]:x64-windows-static -> 1.82.0#1
+  * boost-regex[core]:x64-windows-static -> 1.82.0#1
+  * boost-smart-ptr[core]:x64-windows-static -> 1.82.0#1
+    boost-stacktrace[core]:x64-windows-static -> 1.82.0#1
+  * boost-static-assert[core]:x64-windows-static -> 1.82.0#1
+  * boost-throw-exception[core]:x64-windows-static -> 1.82.0#1
+  * boost-tokenizer[core]:x64-windows-static -> 1.82.0#1
+  * boost-tuple[core]:x64-windows-static -> 1.82.0#1
+  * boost-type-index[core]:x64-windows-static -> 1.82.0#1
+  * boost-type-traits[core]:x64-windows-static -> 1.82.0#1
+  * boost-typeof[core]:x64-windows-static -> 1.82.0#1
+  * boost-uninstall[core]:x64-windows -> 1.82.0#1
+  * boost-uninstall[core]:x64-windows-static -> 1.82.0#1
+  * boost-utility[core]:x64-windows-static -> 1.82.0#1
+  * boost-vcpkg-helpers[core]:x64-windows-static -> 1.82.0#1
+  * boost-winapi[core]:x64-windows-static -> 1.82.0#1
+  * brotli[core]:x64-windows-static -> 1.0.9#5
+  * bzip2[core,tool]:x64-windows-static -> 1.0.8#4
+    freetype[brotli,bzip2,core,png,zlib]:x64-windows-static -> 2.12.1#3
+    glfw3[core]:x64-windows-static -> 3.3.8#2
+    glm[core]:x64-windows-static -> 0.9.9.8#2
+    imgui[core,docking-experimental]:x64-windows-static -> 1.89.4
+  * libpng[core]:x64-windows-static -> 1.6.39#1
+    stb[core]:x64-windows-static -> 2023-04-11#1
+    tinyobjloader[core]:x64-windows-static -> 2.0.0-rc9
+  * vcpkg-cmake[core]:x64-windows -> 2022-12-22
+  * vcpkg-cmake-config[core]:x64-windows -> 2022-02-06#1
+  * vcpkg-cmake-get-vars[core]:x64-windows -> 2023-03-02
+  * zlib[core]:x64-windows-static -> 1.2.13
+Additional packages (*) will be modified to complete this operation.
+Detecting compiler hash for triplet x64-windows-static...
+Detecting compiler hash for triplet x64-windows...
+A suitable version of 7zip was not found (required v21.7.0) Downloading portable 7zip 21.7.0...
+Downloading 7zip...
+https://www.7-zip.org/a/7z2107-extra.7z->C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build\vcpkg.windows\downloads\7z2107-extra.7z
+Downloading https://www.7-zip.org/a/7z2107-extra.7z
+Extracting 7zip...
+Restored 51 package(s) from C:\Users\Fonzy\AppData\Local\vcpkg\archives in 7.9 s. Use --debug to see more details.
+Installing 1/61 boost-uninstall:x64-windows-static...
+Elapsed time to handle boost-uninstall:x64-windows-static: 9.91 ms
+Installing 2/61 boost-vcpkg-helpers:x64-windows-static...
+Elapsed time to handle boost-vcpkg-helpers:x64-windows-static: 16.9 ms
+Installing 3/61 boost-config:x64-windows-static...
+Elapsed time to handle boost-config:x64-windows-static: 255 ms
+Installing 4/61 boost-assert:x64-windows-static...
+Elapsed time to handle boost-assert:x64-windows-static: 23.2 ms
+Installing 5/61 boost-static-assert:x64-windows-static...
+Elapsed time to handle boost-static-assert:x64-windows-static: 19.8 ms
+Installing 6/61 boost-throw-exception:x64-windows-static...
+Elapsed time to handle boost-throw-exception:x64-windows-static: 19.2 ms
+Installing 7/61 boost-core:x64-windows-static...
+Elapsed time to handle boost-core:x64-windows-static: 76.7 ms
+Installing 8/61 boost-mp11:x64-windows-static...
+Elapsed time to handle boost-mp11:x64-windows-static: 40.1 ms
+Installing 9/61 boost-describe:x64-windows-static...
+Elapsed time to handle boost-describe:x64-windows-static: 26.5 ms
+Installing 10/61 boost-type-traits:x64-windows-static...
+Elapsed time to handle boost-type-traits:x64-windows-static: 127 ms
+Installing 11/61 boost-container-hash:x64-windows-static...
+Elapsed time to handle boost-container-hash:x64-windows-static: 25.8 ms
+Installing 12/61 boost-preprocessor:x64-windows-static...
+Elapsed time to handle boost-preprocessor:x64-windows-static: 257 ms
+Installing 13/61 boost-type-index:x64-windows-static...
+Elapsed time to handle boost-type-index:x64-windows-static: 21.9 ms
+Installing 14/61 boost-any:x64-windows-static...
+Elapsed time to handle boost-any:x64-windows-static: 17 ms
+Installing 15/61 boost-array:x64-windows-static...
+Elapsed time to handle boost-array:x64-windows-static: 13.3 ms
+Installing 16/61 boost-bind:x64-windows-static...
+Elapsed time to handle boost-bind:x64-windows-static: 26.2 ms
+Installing 17/61 boost-uninstall:x64-windows...
+Elapsed time to handle boost-uninstall:x64-windows: 12.5 ms
+Installing 18/61 boost-build:x64-windows...
+Elapsed time to handle boost-build:x64-windows: 581 ms
+Installing 19/61 boost-concept-check:x64-windows-static...
+Elapsed time to handle boost-concept-check:x64-windows-static: 25.5 ms
+Installing 20/61 boost-move:x64-windows-static...
+Elapsed time to handle boost-move:x64-windows-static: 44.4 ms
+Installing 21/61 boost-intrusive:x64-windows-static...
+Elapsed time to handle boost-intrusive:x64-windows-static: 65.9 ms
+Installing 22/61 vcpkg-cmake:x64-windows...
+Elapsed time to handle vcpkg-cmake:x64-windows: 15.6 ms
+Installing 23/61 vcpkg-cmake-get-vars:x64-windows...
+Elapsed time to handle vcpkg-cmake-get-vars:x64-windows: 13.2 ms
+Installing 24/61 boost-modular-build-helper:x64-windows...
+Elapsed time to handle boost-modular-build-helper:x64-windows: 14.7 ms
+Installing 25/61 boost-container:x64-windows-static...
+Elapsed time to handle boost-container:x64-windows-static: 74.2 ms
+Installing 26/61 boost-smart-ptr:x64-windows-static...
+Elapsed time to handle boost-smart-ptr:x64-windows-static: 73 ms
+Installing 27/61 boost-typeof:x64-windows-static...
+Elapsed time to handle boost-typeof:x64-windows-static: 46.1 ms
+Installing 28/61 boost-conversion:x64-windows-static...
+Elapsed time to handle boost-conversion:x64-windows-static: 15.8 ms
+Installing 29/61 boost-detail:x64-windows-static...
+Elapsed time to handle boost-detail:x64-windows-static: 27.8 ms
+Installing 30/61 boost-tuple:x64-windows-static...
+Elapsed time to handle boost-tuple:x64-windows-static: 16.8 ms
+Installing 31/61 boost-exception:x64-windows-static...
+Elapsed time to handle boost-exception:x64-windows-static: 30.5 ms
+Installing 32/61 boost-function:x64-windows-static...
+Elapsed time to handle boost-function:x64-windows-static: 29.3 ms
+Installing 33/61 boost-predef:x64-windows-static...
+Elapsed time to handle boost-predef:x64-windows-static: 107 ms
+Installing 34/61 boost-io:x64-windows-static...
+Elapsed time to handle boost-io:x64-windows-static: 19.5 ms
+Installing 35/61 boost-utility:x64-windows-static...
+Elapsed time to handle boost-utility:x64-windows-static: 28 ms
+Installing 36/61 boost-mpl:x64-windows-static...
+Elapsed time to handle boost-mpl:x64-windows-static: 638 ms
+Installing 37/61 boost-function-types:x64-windows-static...
+Elapsed time to handle boost-function-types:x64-windows-static: 62.7 ms
+Installing 38/61 boost-functional:x64-windows-static...
+Elapsed time to handle boost-functional:x64-windows-static: 24.1 ms
+Installing 39/61 boost-fusion:x64-windows-static...
+Elapsed time to handle boost-fusion:x64-windows-static: 603 ms
+Installing 40/61 boost-integer:x64-windows-static...
+Elapsed time to handle boost-integer:x64-windows-static: 24.3 ms
+Installing 41/61 boost-optional:x64-windows-static...
+Elapsed time to handle boost-optional:x64-windows-static: 26.4 ms
+Installing 42/61 boost-iterator:x64-windows-static...
+Elapsed time to handle boost-iterator:x64-windows-static: 40.3 ms
+Installing 43/61 boost-numeric-conversion:x64-windows-static...
+Elapsed time to handle boost-numeric-conversion:x64-windows-static: 32.1 ms
+Installing 44/61 boost-regex:x64-windows-static...
+Elapsed time to handle boost-regex:x64-windows-static: 80 ms
+Installing 45/61 boost-range:x64-windows-static...
+Elapsed time to handle boost-range:x64-windows-static: 107 ms
+Installing 46/61 boost-lexical-cast:x64-windows-static...
+Elapsed time to handle boost-lexical-cast:x64-windows-static: 26 ms
+Installing 47/61 boost-tokenizer:x64-windows-static...
+Elapsed time to handle boost-tokenizer:x64-windows-static: 19.1 ms
+Installing 48/61 boost-program-options:x64-windows-static...
+Elapsed time to handle boost-program-options:x64-windows-static: 40.1 ms
+Installing 49/61 boost-winapi:x64-windows-static...
+Elapsed time to handle boost-winapi:x64-windows-static: 86.3 ms
+Installing 50/61 boost-stacktrace:x64-windows-static...
+Elapsed time to handle boost-stacktrace:x64-windows-static: 38 ms
+Installing 51/61 vcpkg-cmake-config:x64-windows...
+Elapsed time to handle vcpkg-cmake-config:x64-windows: 15.1 ms
+Installing 52/61 brotli:x64-windows-static...
+Building brotli[core]:x64-windows-static...
+-- Downloading https://github.com/google/brotli/archive/e61745a6b7add50d380cfd7d3883dd6c62fc2c71.tar.gz -> google-brotli-e61745a6b7add50d380cfd7d3883dd6c62fc2c71.tar.gz...
+-- Extracting source C:/Users/Fonzy/dlsu_raytracer/RayTracingInVulkan/build/vcpkg.windows/downloads/google-brotli-e61745a6b7add50d380cfd7d3883dd6c62fc2c71.tar.gz
+-- Applying patch install.patch
+-- Applying patch fix-arm-uwp.patch
+-- Applying patch pkgconfig.patch
+-- Using source at C:/Users/Fonzy/dlsu_raytracer/RayTracingInVulkan/build/vcpkg.windows/buildtrees/brotli/src/6c62fc2c71-3fc02d8e7f.clean
+-- Found external ninja('1.11.0').
+-- Configuring x64-windows-static
+-- Building x64-windows-static-dbg
+-- Building x64-windows-static-rel
+-- Fixing pkgconfig file: C:/Users/Fonzy/dlsu_raytracer/RayTracingInVulkan/build/vcpkg.windows/packages/brotli_x64-windows-static/lib/pkgconfig/libbrotlicommon.pc
+-- Fixing pkgconfig file: C:/Users/Fonzy/dlsu_raytracer/RayTracingInVulkan/build/vcpkg.windows/packages/brotli_x64-windows-static/lib/pkgconfig/libbrotlidec.pc
+-- Fixing pkgconfig file: C:/Users/Fonzy/dlsu_raytracer/RayTracingInVulkan/build/vcpkg.windows/packages/brotli_x64-windows-static/lib/pkgconfig/libbrotlienc.pc
+-- Downloading https://repo.msys2.org/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst;https://www2.futureware.at/~nickoe/msys2-mirror/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst;https://mirror.yandex.ru/mirrors/msys2/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst;https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst;https://mirrors.ustc.edu.cn/msys2/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst;https://mirror.bit.edu.cn/msys2/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst;https://mirror.selfnet.de/msys2/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst;https://mirrors.sjtug.sjtu.edu.cn/msys2/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst -> msys-mingw-w64-i686-pkg-config-0.29.2-3-any.pkg.tar.zst...
+-- Downloading https://repo.msys2.org/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst;https://www2.futureware.at/~nickoe/msys2-mirror/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst;https://mirror.yandex.ru/mirrors/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst;https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst;https://mirrors.ustc.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst;https://mirror.bit.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst;https://mirror.selfnet.de/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst;https://mirrors.sjtug.sjtu.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst -> msys-mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst...
+[DEBUG] To include the environment variables in debug output, pass --debug-env
+[DEBUG] Trying to load bundleconfig from C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build\vcpkg.windows\vcpkg-bundle.json
+[DEBUG] Failed to open: C:\Users\Fonzy\dlsu_raytracer\RayTracingInVulkan\build\vcpkg.windows\vcpkg-bundle.json
+[DEBUG] Bundle config: readonly=false, usegitregistry=false, embeddedsha=nullopt, deployment=Git, vsversion=nullopt
+[DEBUG] Metrics enabled.
+[DEBUG] Feature flag 'binarycaching' unset
+[DEBUG] Feature flag 'compilertracking' unset
+[DEBUG] Feature flag 'registries' unset
+[DEBUG] Feature flag 'versions' unset
+Downloading https://repo.msys2.org/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+Downloading https://www2.futureware.at/~nickoe/msys2-mirror/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+Downloading https://mirror.yandex.ru/mirrors/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+Downloading https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+Downloading https://mirrors.ustc.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+Downloading https://mirror.bit.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+warning: Download failed -- retrying after 1000ms
+warning: Download failed -- retrying after 2000ms
+warning: Download failed -- retrying after 4000ms
+Downloading https://mirror.selfnet.de/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+Downloading https://mirrors.sjtug.sjtu.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst
+error: Failed to download from mirror set
+error: https://repo.msys2.org/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: failed: status code 404
+error: https://www2.futureware.at/~nickoe/msys2-mirror/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: failed: status code 404
+error: https://mirror.yandex.ru/mirrors/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: failed: status code 404
+error: https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: failed: status code 404
+error: https://mirrors.ustc.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: failed: status code 404
+error: https://mirror.bit.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: WinHttpSendRequest failed with exit code 12007
+error: https://mirror.bit.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: WinHttpSendRequest failed with exit code 12007
+error: https://mirror.bit.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: WinHttpSendRequest failed with exit code 12007
+error: https://mirror.bit.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: WinHttpSendRequest failed with exit code 12007
+error: https://mirror.selfnet.de/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: failed: status code 404
+error: https://mirrors.sjtug.sjtu.edu.cn/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-9.0.0.6373.5be8fcd83-1-any.pkg.tar.zst: failed: status code 404
+[DEBUG] D:\a\_work\1\s\src\vcpkg\base\downloads.cpp(961): 
+[DEBUG] Time in subprocesses: 0us
+[DEBUG] Time in parsing JSON: 2us
+[DEBUG] Time in JSON reader: 0us
+[DEBUG] Time in filesystem: 3551us
+[DEBUG] Time in loading ports: 0us
+[DEBUG] Exiting after 17 s (16893831us)
+
+CMake Error at scripts/cmake/vcpkg_download_distfile.cmake:32 (message):
+      
+      Failed to download file with error: 1
+      If you are using a proxy, please check your proxy setting. Possible causes are:
+      
+      1. You are actually using an HTTP proxy, but setting HTTPS_PROXY variable
+         to `https://address:port`. This is not correct, because `https://` prefix
+         claims the proxy is an HTTPS proxy, while your proxy (v2ray, shadowsocksr
+         , etc..) is an HTTP proxy. Try setting `http://address:port` to both
+         HTTP_PROXY and HTTPS_PROXY instead.
+      
+      2. If you are using Windows, vcpkg will automatically use your Windows IE Proxy Settings
+         set by your proxy software. See https://github.com/microsoft/vcpkg-tool/pull/77
+         The value set by your proxy might be wrong, or have same `https://` prefix issue.
+      
+      3. Your proxy's remote server is out of service.
+      
+      If you've tried directly download the link, and believe this is not a temporary
+      download server failure, please submit an issue at https://github.com/Microsoft/vcpkg/issues
+      to report this upstream download server failure.
+      
+
+Call Stack (most recent call first):
+  scripts/cmake/vcpkg_download_distfile.cmake:270 (z_vcpkg_download_distfile_show_proxy_and_fail)
+  scripts/cmake/vcpkg_acquire_msys.cmake:26 (vcpkg_download_distfile)
+  scripts/cmake/vcpkg_acquire_msys.cmake:124 (z_vcpkg_acquire_msys_download_package)
+  scripts/cmake/vcpkg_find_acquire_program(PKGCONFIG).cmake:22 (vcpkg_acquire_msys)
+  scripts/cmake/vcpkg_find_acquire_program.cmake:118 (include)
+  scripts/cmake/vcpkg_fixup_pkgconfig.cmake:203 (vcpkg_find_acquire_program)
+  ports/brotli/portfile.cmake:22 (vcpkg_fixup_pkgconfig)
+  scripts/ports.cmake:147 (include)
+
+
+error: building brotli:x64-windows-static failed with: BUILD_FAILED
+Please ensure you're using the latest port files with `git pull` and `vcpkg update`.
+Then check for known issues at:
+    https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+brotli
+You can submit a new issue at:
+    https://github.com/microsoft/vcpkg/issues/new?title=[brotli]+Build+error&body=Copy+issue+body+from+C%3A%2FUsers%2FFonzy%2Fdlsu_raytracer%2FRayTracingInVulkan%2Fbuild%2Fvcpkg.windows%2Finstalled%2Fvcpkg%2Fissue_body.md
+You can also sumbit an issue by running (GitHub cli must be installed):
+    gh issue create -R microsoft/vcpkg --title "[brotli] Build failure" --body-file C:/Users/Fonzy/dlsu_raytracer/RayTracingInVulkan/build/vcpkg.windows/installed/vcpkg/issue_body.md
+Failed with error #1.

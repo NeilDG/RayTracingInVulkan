@@ -12,10 +12,10 @@
 #include "Vulkan/SwapChain.hpp"
 #include "Vulkan/Window.hpp"
 
-#include "imgui.h"
-#include "ImGui/imgui_freetype.h"
-#include "ImGui/imgui_impl_glfw.h"
-#include "ImGui/imgui_impl_vulkan.h"
+#include <imgui.h>
+#include <imgui_freetype.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_vulkan.h>
 
 #include <array>
 #include "From-GDGRAP2/UIManager.h"
@@ -85,8 +85,8 @@ UserInterface::UserInterface(
 	io.IniFilename = "imgui.ini";
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+	// io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
 	ImGui::LoadIniSettingsFromDisk(ApplicationConfig::DEFAULT_UI_LAYOUT_PATH.c_str());
 
@@ -105,13 +105,11 @@ UserInterface::UserInterface(
 
 	Vulkan::SingleTimeCommands::Submit(commandPool, [] (VkCommandBuffer commandBuffer)
 	{
-		if (!ImGui_ImplVulkan_CreateFontsTexture(commandBuffer))
+		if (!ImGui_ImplVulkan_CreateFontsTexture())
 		{
 			Throw(std::runtime_error("failed to create ImGui font textures"));
 		}
 	});
-
-	ImGui_ImplVulkan_DestroyFontUploadObjects();
 
 	//initialize additional libs
 	UIManager::initialize();

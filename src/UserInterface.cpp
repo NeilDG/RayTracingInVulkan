@@ -85,8 +85,8 @@ UserInterface::UserInterface(
 	io.IniFilename = "imgui.ini";
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+	// io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
 	ImGui::LoadIniSettingsFromDisk(ApplicationConfig::DEFAULT_UI_LAYOUT_PATH.c_str());
 
@@ -110,7 +110,6 @@ UserInterface::UserInterface(
 			Throw(std::runtime_error("failed to create ImGui font textures"));
 		}
 	});
-	ImGui_ImplVulkan_DestroyFontUploadObjects();
 
 	//initialize additional libs
 	UIManager::initialize();

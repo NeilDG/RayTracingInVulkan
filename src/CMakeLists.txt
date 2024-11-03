@@ -173,9 +173,15 @@ set(src_files
 	UserSettings.hpp
 )
 
+set(src_files_screens
+Screens/LightingSettingsScreen.h
+Screens/LightingSettingsScreen.cpp
+)
+
 source_group("Assets" FILES ${src_files_assets})
 source_group("Utilities" FILES ${src_files_utilities})
 source_group("From-GDGRAP2" FILES ${src_files_from_gdgrap2})
+source_group("Screens" FILES ${src_files_screens})
 source_group("Vulkan" FILES ${src_files_vulkan})
 source_group("Vulkan.RayTracing" FILES ${src_files_vulkan_raytracing})
 source_group("Main" FILES ${src_files})
@@ -185,6 +191,7 @@ add_executable(${exe_name}
 	${src_files_imgui} 
 	${src_files_utilities}
 	${src_files_from_gdgrap2}
+	${src_files_screens}
 	${src_files_vulkan} 
 	${src_files_vulkan_raytracing} 
 	${src_files}

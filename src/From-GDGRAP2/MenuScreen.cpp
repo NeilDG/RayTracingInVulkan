@@ -4,6 +4,8 @@
 
 #include "EventBroadcaster.h"
 #include "ModelManager.h"
+#include "UIManager.h"
+#include "Screens/LightingSettingsScreen.h"
 
 // #include "GameObjectManager.h"
 
@@ -69,6 +71,13 @@ void MenuScreen::drawUI()
 			if (ImGui::MenuItem("Material")) { this->OnMaterialComponentClicked(); }
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Window")) {
+			if (ImGui::MenuItem("Lighting Settings")) {
+				this->OnLightingSettingsClicked();
+			}
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
 	}
 
@@ -118,6 +127,12 @@ void MenuScreen::OnCreatePlaneClicked()
 void MenuScreen::OnMaterialComponentClicked()
 {
 	// Debug::Log("Creating material placeholder.");
+}
+
+void MenuScreen::OnLightingSettingsClicked()
+{
+	UINames uiNames;
+	UIManager::getInstance()->setEnabled(uiNames.LIGHTING_SETTINGS_SCREEN, true);
 }
 
 void MenuScreen::OnLoadSphereWorld()

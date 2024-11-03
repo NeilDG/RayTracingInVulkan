@@ -6,6 +6,7 @@
 #include "HierarchyScreen.h"
 #include "InspectorScreen.h"
 #include "ProfilerScreen.h"
+#include "Screens/LightingSettingsScreen.h"
 
 
 UIManager* UIManager::sharedInstance = NULL;
@@ -25,10 +26,12 @@ void UIManager::destroy()
     delete sharedInstance;
 }
 
-void UIManager::drawAllUI()
+void UIManager::drawAllUI() const
 {
 	for (int i = 0; i < this->uiList.size(); i++) {
-		this->uiList[i]->drawUI();
+		if (this->uiList[i]->enabled) {
+			this->uiList[i]->drawUI();
+		}
 	}
 }
 
@@ -82,6 +85,12 @@ UIManager::UIManager()
 	std::shared_ptr<ProfilerScreen> profilerScreen = std::make_shared<ProfilerScreen>();
 	this->uiTable[uiNames.PROFILER_SCREEN] = profilerScreen;
 	this->uiList.push_back(profilerScreen);
+
+	std::shared_ptr<LightingSettingsScreen> lightingSettingsScreen = std::make_shared<LightingSettingsScreen>();
+	this->uiTable[uiNames.LIGHTING_SETTINGS_SCREEN] = lightingSettingsScreen;
+	this->uiList.push_back(lightingSettingsScreen);
+	lightingSettingsScreen->SetEnabled(false);
+
 	//
 	// MaterialScreen* materialScreen = new MaterialScreen();
 	// this->uiTable[uiNames.MATERIAL_SCREEN] = materialScreen;

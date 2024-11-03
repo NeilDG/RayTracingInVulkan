@@ -18,6 +18,7 @@ public:
 	const String ACTION_SCREEN = "ACTION_SCREEN";
 	const String CONSOLE_SCREEN = "CONSOLE_SCREEN";
 	const String MATERIAL_SCREEN = "MATERIAL_SCREEN";
+	const String LIGHTING_SETTINGS_SCREEN = "LIGHTING_SETTINGS_SCREEN";
 };
 
 class Viewport;
@@ -32,7 +33,7 @@ public:
 	static void initialize();
 	static void destroy();
 
-	void drawAllUI();
+	void drawAllUI() const;
 	void setEnabled(String uiName, bool flag);
 	std::shared_ptr<AUIScreen> findUIByName(String uiName);
 

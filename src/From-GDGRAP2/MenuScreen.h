@@ -14,6 +14,7 @@ private:
 	void OnCreateSphereClicked();
 	void OnCreatePlaneClicked();
 	void OnMaterialComponentClicked();
+	void OnLightingSettingsClicked();
 
 	void OnLoadSphereWorld();
 	void OnLoadBoxWorld();

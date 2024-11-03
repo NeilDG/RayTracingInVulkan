@@ -20,6 +20,7 @@
 #include <array>
 #include "From-GDGRAP2/UIManager.h"
 #include "From-GDGRAP2/RTConfig.h"
+#include <Screens/LightingSettingsScreen.h>
 
 
 namespace
@@ -113,6 +114,9 @@ UserInterface::UserInterface(
 
 	//initialize additional libs
 	UIManager::initialize();
+	UINames uiNames;
+	LightingSettingsScreen* lightingSettingsScreen = dynamic_cast<LightingSettingsScreen*> (UIManager::getInstance()->findUIByName(uiNames.LIGHTING_SETTINGS_SCREEN).get());
+	lightingSettingsScreen->assignSettingsRef(&Settings());
 }
 
 UserInterface::~UserInterface()
@@ -130,7 +134,7 @@ void UserInterface::Render(VkCommandBuffer commandBuffer, const Vulkan::FrameBuf
 
 	// DrawSettings();
 	// DrawOverlay(statistics);
-	//ImGui::ShowStyleEditor();
+	// ImGui::ShowStyleEditor();
 	UIManager::getInstance()->drawAllUI();
 	ImGui::Render();
 
